@@ -29,9 +29,9 @@ This project serves as a job listing platform, built with Vue.js, Tailwind CSS, 
    npm install
    ```
 
-2. Run the development server:
+2. Run the development server concurrently along with backend:
    ```bash
-   npm run serve
+   npm run dev
    ```
 
 ### Backend Setup
