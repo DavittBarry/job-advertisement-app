@@ -33,7 +33,17 @@ app.post('/login', async (req, res) => {
   res.header('auth-token', token).send(token);
 });
 
-const PORT = process.env.PORT || 3000;
+const jobEntries = [
+  {title: 'Software Engineer', company: 'Company A', description: 'Job description here'},
+  {title: 'Data Analyst', company: 'Company B', description: 'Analyze data and create reports'},
+  {title: 'UI/UX Designer', company: 'Company C', description: 'Design user interfaces and experiences'},
+];
+
+app.get('/api/jobEntries', (req, res) => {
+  res.json(jobEntries);
+});
+
+const PORT = process.env.BACKEND_PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
