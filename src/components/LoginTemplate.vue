@@ -1,8 +1,11 @@
 <template>
-        <div class="flex flex-col items-center justify-center h-screen">
-                <input class="border p-2 rounded mb-2" v-model="username" placeholder="Username" />
-                <input class="border p-2 rounded mb-2" type="password" v-model="password" placeholder="Password" />
-                <button class="bg-blue-500 text-white p-2 rounded" @click="login">Login</button>
+        <div class="flex items-center space-x-4">
+                <input class="border-brand-green-500 p-2 rounded hover:border-brand-blue-500 focus:border-brand-blue-500 transition"
+                        v-model="username" placeholder="Username" />
+                <input class="border-brand-green-500 p-2 rounded hover:border-brand-blue-500 focus:border-brand-blue-500 transition"
+                        type="password" v-model="password" placeholder="Password" />
+                <button class="bg-brand-green-500 text-white p-2 rounded hover:bg-brand-blue-600 focus:outline-none focus:border-brand-blue-600 focus:ring focus:ring-brand-blue-200 transition"
+                        @click="login">Login</button>
         </div>
 </template>
 
