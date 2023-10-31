@@ -39,11 +39,26 @@
                                         </button>
                                 </div>
                                 <div class="hidden lg:block">
-                                        <LoginTemplate />
+                                        <div>
+                                                <div class="lg:flex lg:items-center lg:space-x-4">
+                                                        <input class="border-brand-green-500 p-2 rounded hover:border-brand-blue-500 focus:border-brand-blue-500 transition"
+                                                                v-model="username" placeholder="Username" />
+                                                        <input class="border-brand-green-500 p-2 rounded hover:border-brand-blue-500 focus:border-brand-blue-500 transition"
+                                                                type="password" v-model="password" placeholder="Password" />
+                                                        <router-link to="/login">
+                                                                <button class="bg-brand-blue-600 text-white p-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 focus:ring focus:ring-brand-blue-200 transition"
+                                                                        @click="login">Login</button>
+                                                        </router-link>
+                                                        <router-link to="/register">
+                                                                <button class="bg-brand-blue-600 text-white p-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 focus:ring focus:ring-brand-blue-200 transition"
+                                                                        @click="register">Register</button>
+                                                        </router-link>
+                                                </div>
+                                        </div>
                                 </div>
                         </div>
                 </div>
-                <div :class="{ 'block': isOpen, 'hidden': !isOpen }" class="lg:hidden">
+                <div :class="{ 'block': isOpen, 'hidden': !isOpen }" class="lg:hidden text-center">
                         <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                                 <router-link to="/jobs"
                                         class="text-gray-600 font-semibold p-1 rounded-lg hover:bg-logo-container-bg hover:text-gray-900 transition"
@@ -51,18 +66,25 @@
                                         Jobs
                                 </router-link>
                         </div>
-                        <LoginTemplate />
+                        <div class="flex row justify-center space-x-2">
+                                <router-link to="/login">
+                                <button
+                                                class="bg-brand-blue-600 text-white p-2 w-[74.57px] rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 focus:ring focus:ring-brand-blue-200 transition">
+                                                Login
+                                        </button>
+                                </router-link>
+                                <router-link to="/register">
+                                        <button class="bg-brand-blue-600 text-white p-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 mb-4 focus:ring focus:ring-brand-blue-200 transition"
+                                                @click="register">Register</button>
+                                </router-link>
+                        </div>
                 </div>
         </nav>
 </template>
 
 <script>
-import LoginTemplate from './LoginTemplate';
 
 export default {
-        components: {
-                LoginTemplate
-        },
         data() {
                 return {
                         isOpen: false

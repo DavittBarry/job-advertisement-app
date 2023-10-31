@@ -1,6 +1,6 @@
 <template>
-        <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-                <div class="rounded-xl p-4 bg-brand-nav-bg-light container max-w-md w-full space-y-8">
+        <div class="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+                <div class="p-4 bg-brand-nav-bg-light container max-w-md w-full space-y-8">
                         <div>
                                 <h2 class="mt-6 text-center text-3xl font-extrabold text-dark">
                                         Register
@@ -11,7 +11,7 @@
                                         <div>
                                                 <label for="username" class="sr-only">Username</label>
                                                 <input id="username" name="username" type="text" v-model="username" required
-                                                        class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 
+                                                        class="relative block w-full px-3 py-2 border border-gray-300 
                           placeholder-dark text-dark rounded-t-md focus:outline-none 
                           focus:ring-brand-blue-500 focus:border-brand-blue-500 focus:z-10 sm:text-sm"
                                                         placeholder="Username">
@@ -19,8 +19,8 @@
                                         <div>
                                                 <label for="email" class="sr-only">Email address</label>
                                                 <input id="email" name="email" type="email" v-model="email" autocomplete="email"
-                                                        required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 
-                          placeholder-dark text-dark rounded-t-md focus:outline-none 
+                                                        required class="appearance-none relative block w-full px-3 py-2 border border-gray-300 
+                          placeholder-dark text-dark focus:outline-none 
                           focus:ring-brand-blue-500 focus:border-brand-blue-500 focus:z-10 sm:text-sm"
                                                         placeholder="Email address">
                                         </div>

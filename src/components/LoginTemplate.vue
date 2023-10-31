@@ -1,26 +1,40 @@
 <template>
-        <div>
-                <div class="hidden lg:flex lg:items-center lg:space-x-4">
-                        <input class="border-brand-green-500 p-2 rounded hover:border-brand-blue-500 focus:border-brand-blue-500 transition"
-                                v-model="username" placeholder="Username" />
-                        <input class="border-brand-green-500 p-2 rounded hover:border-brand-blue-500 focus:border-brand-blue-500 transition"
-                                type="password" v-model="password" placeholder="Password" />
-                        <button class="bg-brand-blue-600 text-white p-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 focus:ring focus:ring-brand-blue-200 transition"
-                                @click="login">Login</button>
-                        <router-link to="/register">
-                                <button class="bg-brand-blue-600 text-white p-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 focus:ring focus:ring-brand-blue-200 transition"
-                                        @click="register">Register</button>
-                        </router-link>
+        <div class="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+                        <div class="rounded-xl p-4 bg-brand-nav-bg-light container max-w-md w-full">
+                                <div>
+                                        <h2 class="mt-6 text-center text-3xl font-extrabold text-dark">
+                                                Login
+                                        </h2>
+                                </div>
+                                <form class="mt-8 space-y-6" @submit.prevent="login">
+                                        <div class="rounded-md shadow-sm -space-y-px">
+                                                <div>
+                                                        <label for="username" class="sr-only">Username</label>
+                                                        <input id="username" name="username" type="text" v-model="username" required
+                                                                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 
+                          placeholder-dark text-dark rounded-t-md focus:outline-none 
+                          focus:ring-brand-blue-500 focus:border-brand-blue-500 focus:z-10 sm:text-sm"
+                                                                placeholder="Username">
+                                                </div>
+                                                <div>
+                                                        <label for="password" class="sr-only">Password</label>
+                                                        <input id="password" name="password" type="password" v-model="password" required
+                                                                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 
+                          placeholder-dark text-dark rounded-b-md focus:outline-none 
+                          focus:ring-brand-blue-500 focus:border-brand-blue-500 focus:z-10 sm:text-sm"
+                                                                placeholder="Password">
+                                                </div>
+                                        </div>
+
+                                        <div>
+                                                <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent 
+                         text-sm font-medium rounded-md text-dark-txt bg-brand-blue-500 hover:bg-brand-green-500">
+                                                        Login
+                                                </button>
+                                        </div>
+                                </form>
+                        </div>
                 </div>
-                <div class="lg:hidden">
-                        <router-link to="/login">
-                                <button
-                                        class="bg-brand-blue-600 text-white p-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 focus:ring focus:ring-brand-blue-200 transition">
-                                        Login
-                                </button>
-                        </router-link>
-                </div>
-        </div>
 </template>
 
 <script>
