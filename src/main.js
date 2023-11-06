@@ -6,12 +6,9 @@ import router from './routes/index';
 
 axios.defaults.baseURL = 'http://localhost:4000';
 axios.interceptors.request.use(config => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.common['auth-token'] = token;
-  }
   return config;
 });
+
 
 createApp(App)
   .use(router)

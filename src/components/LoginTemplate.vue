@@ -39,6 +39,7 @@
 
 <script>
 import axios from 'axios';
+import router from '../routes/index';
 
 export default {
         data() {
@@ -55,6 +56,7 @@ export default {
                                         password: this.password
                                 });
                                 localStorage.setItem('token', response.data);
+                                router.push({ name: 'Home' });
                         } catch (error) {
                                 console.error('An error occurred during login:', error);
                         }
@@ -62,3 +64,4 @@ export default {
         }
 };
 </script>
+
