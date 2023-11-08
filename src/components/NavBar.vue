@@ -68,7 +68,7 @@
                         </div>
                         <div class="flex row justify-center space-x-2">
                                 <router-link to="/login">
-                                <button
+                                        <button
                                                 class="bg-brand-blue-600 text-white p-2 w-[74.57px] rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 focus:ring focus:ring-brand-blue-200 transition">
                                                 Login
                                         </button>
@@ -83,17 +83,24 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
         data() {
                 return {
-                        isOpen: false
+                        isOpen: false,
                 };
+        },
+        computed: {
+                ...mapGetters(['isAuthenticated']),
         },
         methods: {
                 toggleMenu() {
                         this.isOpen = !this.isOpen;
-                }
+                },
+                ...mapActions(['logout']),
         }
 };
 </script>
+
+
