@@ -1,12 +1,14 @@
 <template>
-        <nav class="bg-brand-nav-bg-light">
+        <nav :key="isAuthenticated" class="bg-brand-nav-bg-light">
+                <!-- Desktop view -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div class="flex items-center justify-between h-16">
                                 <div class="flex items-center">
                                         <router-link to="/"
                                                 class="flex-shrink-0 flex items-center space-x-2 rounded-lg hover:bg-brand-nav-bg-light transition"
                                                 active-class="bg-brand-nav-bg-light"
-                                                :style="{ background: 'linear-gradient(to right, #D9D9D9, #F1F1F1)' }">
+                                                :style="{ background: 'linear-gradient(to right, #D9D9D9, #F1F1F1)' }"
+                                                @click="closeMenu">
                                                 <img src="@/assets/logo.png" alt="Job Finder Logo" class="w-10 h-10">
                                                 <h1 class="text-2xl font-semibold text-gray-600">
                                                         Job Finder
@@ -28,7 +30,7 @@
                                                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                         stroke="currentColor" aria-hidden="true">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                                                d="M4 6h16M4 12h16M4 18h16"></path>
+                                                                d="M4 6h16M4 12h16m-7 6h7"></path>
                                                 </svg>
                                                 <svg v-else class="block h-6 w-6 transition duration-300 ease-in-out"
                                                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -39,68 +41,88 @@
                                         </button>
                                 </div>
                                 <div class="hidden lg:block">
-                                        <div>
-                                                <div class="lg:flex lg:items-center lg:space-x-4">
-                                                        <input class="border-brand-green-500 p-2 rounded hover:border-brand-blue-500 focus:border-brand-blue-500 transition"
-                                                                v-model="username" placeholder="Username" />
-                                                        <input class="border-brand-green-500 p-2 rounded hover:border-brand-blue-500 focus:border-brand-blue-500 transition"
-                                                                type="password" v-model="password" placeholder="Password" />
-                                                        <router-link to="/login">
-                                                                <button class="bg-brand-blue-600 text-white p-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 focus:ring focus:ring-brand-blue-200 transition"
-                                                                        @click="login">Login</button>
-                                                        </router-link>
-                                                        <router-link to="/register">
-                                                                <button class="bg-brand-blue-600 text-white p-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 focus:ring focus:ring-brand-blue-200 transition"
-                                                                        @click="register">Register</button>
-                                                        </router-link>
-                                                </div>
+                                        <div class="lg:flex lg:items-center lg:space-x-4">
+                                                <router-link to="/login" v-if="!isAuthenticated">
+                                                        <button
+                                                                class="bg-brand-blue-600 text-white p-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 focus:ring w-[74.57px] focus:ring-brand-blue-200 transition">
+                                                                Login
+                                                        </button>
+                                                </router-link>
+                                                <router-link to="/register" v-if="!isAuthenticated">
+                                                        <button
+                                                                class="bg-brand-blue-600 text-white p-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 focus:ring focus:ring-brand-blue-200 transition">
+                                                                Register
+                                                        </button>
+                                                </router-link>
+                                                <button v-if="isAuthenticated" @click="performLogout"
+                                                
+                                                        class="bg-brand-blue-600 text-white p-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 focus:ring focus:ring-brand-blue-200 transition"
+                                                        >
+                                                        Logout
+                                                </button>
                                         </div>
                                 </div>
                         </div>
                 </div>
+                <!-- Mobile view -->
                 <div :class="{ 'block': isOpen, 'hidden': !isOpen }" class="lg:hidden text-center">
                         <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                                 <router-link to="/jobs"
-                                        class="text-gray-600 font-semibold p-1 rounded-lg hover:bg-logo-container-bg hover:text-gray-900 transition"
-                                        active-class="bg-logo-container-bg text-gray-900">
+                                        class="text-gray-600 font-semibold p-2 rounded-lg hover:bg-logo-container-bg hover:text-gray-900 transition"
+                                        active-class="bg-logo-container-bg text-gray-900"
+                                        @click="closeMenu">
                                         Jobs
                                 </router-link>
-                        </div>
-                        <div class="flex row justify-center space-x-2">
-                                <router-link to="/login">
-                                        <button
-                                                class="bg-brand-blue-600 text-white p-2 w-[74.57px] rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 focus:ring focus:ring-brand-blue-200 transition">
-                                                Login
+                                <div class="flex row justify-center space-x-2">
+                                        <router-link to="/login" v-if="!isAuthenticated"
+                                        @click="closeMenu">
+                                                <button
+                                                        class="bg-brand-blue-600 text-white p-2 mt-4 w-[74.57px] rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 focus:ring focus:ring-brand-blue-200 transition">
+                                                        Login
+                                                </button>
+                                        </router-link>
+                                        <router-link to="/register" v-if="!isAuthenticated"
+                                        @click="closeMenu">
+                                                <button
+                                                        class="bg-brand-blue-600 text-white p-2 mt-4 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 mb-2 focus:ring focus:ring-brand-blue-200 transition">
+                                                        Register
+                                                </button>
+                                        </router-link>
+                                        <button v-if="isAuthenticated" @click="performLogout"
+                                                class="bg-brand-blue-600 text-white p-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 mb-2 focus:ring focus:ring-brand-blue-200 transition">
+                                                Logout
                                         </button>
-                                </router-link>
-                                <router-link to="/register">
-                                        <button class="bg-brand-blue-600 text-white p-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 mb-4 focus:ring focus:ring-brand-blue-200 transition"
-                                                @click="register">Register</button>
-                                </router-link>
+                                </div>
                         </div>
                 </div>
         </nav>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
+        name: 'NavBar',
+        computed: {
+                ...mapState(['isAuthenticated']),
+        },
+        methods: {
+                ...mapActions(['logout']),
+                toggleMenu() {
+                        this.isOpen = !this.isOpen;
+                },
+                performLogout() {
+                        this.logout();
+                        this.closeMenu();
+                },
+                closeMenu() {
+                        this.isOpen = false;
+                }
+        },
         data() {
                 return {
                         isOpen: false,
                 };
         },
-        computed: {
-                ...mapGetters(['isAuthenticated']),
-        },
-        methods: {
-                toggleMenu() {
-                        this.isOpen = !this.isOpen;
-                },
-                ...mapActions(['logout']),
-        }
 };
 </script>
-
-

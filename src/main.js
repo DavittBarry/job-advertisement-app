@@ -3,7 +3,7 @@ import App from './App.vue';
 import './assets/tailwind.css';
 import axios from 'axios';
 import router from './routes/index';
-import store from './store';
+import store from './store/index';
 
 const app = createApp(App);
 
