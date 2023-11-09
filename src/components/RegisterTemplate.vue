@@ -49,6 +49,7 @@
 
         <div>
           <button
+            :disabled="isSubmitting"
             type="submit"
             class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-dark-txt bg-brand-blue-500 hover:bg-brand-green-500"
           >
@@ -69,18 +70,40 @@ export default {
       username: "",
       email: "",
       password: "",
+      isSubmitting: false,
+      errorMessage: "",
     };
   },
   methods: {
     async register() {
+      console.log("Attempting to register:", this.isSubmitting);
+      if (this.isSubmitting) return;
+      this.isSubmitting = true;
+      this.errorMessage = "";
+
+      console.log("Register method triggered");
+
       try {
-        await axios.post("http://localhost:4000/register", {
+        console.log("Sending POST request to /register");
+        await axios.post("/register", {
           username: this.username,
           email: this.email,
           password: this.password,
         });
+        console.log("POST request sent");
+        this.isSubmitting = false;
       } catch (error) {
-        console.error("An error occurred during registration:", error);
+        console.error("Error in POST request:", error);
+        this.isSubmitting = false;
+        if (error.response) {
+          this.errorMessage =
+            error.response.data.message ||
+            "An error occurred during registration.";
+        } else if (error.request) {
+          console.error("Request error:", error.request);
+        } else {
+          console.error("Error message:", error.message);
+        }
       }
     },
   },

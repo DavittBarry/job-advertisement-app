@@ -18,10 +18,20 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 app.post("/register", async (req, res) => {
   const { username, password, email } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const newUser = new User({ username, email, password: hashedPassword });
-  await newUser.save();
-  res.status(201).send("User registered");
+  console.log(req.body);
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({ username, email, password: hashedPassword });
+    await newUser.save();
+    res.status(201).send("User registered");
+  } catch (error) {
+    if (error.code === 11000) {
+      res.status(400).send("Username already exists.");
+    } else {
+      console.error(error);
+      res.status(500).send("An error occurred during registration.");
+    }
+  }
 });
 
 app.post("/login", async (req, res) => {
