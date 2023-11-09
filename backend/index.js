@@ -23,7 +23,7 @@ app.post("/register", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ username, email, password: hashedPassword });
     await newUser.save();
-    res.status(201).send("User registered");
+    res.status(201).json({ message: "User registered", userId: newUser._id });
   } catch (error) {
     if (error.code === 11000) {
       res.status(400).send("Username already exists.");
@@ -73,3 +73,5 @@ const PORT = process.env.BACKEND_PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+module.exports = app;
