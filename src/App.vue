@@ -9,13 +9,13 @@
 </template>
 
 <script>
-import NavBar from './components/NavBar';
-import FooterTemplate from './components/FooterTemplate';
+import NavBar from "./components/NavBar";
+import FooterTemplate from "./components/FooterTemplate";
 
 export default {
   components: {
     NavBar,
-    FooterTemplate
-  }
+    FooterTemplate,
+  },
 };
 </script>
