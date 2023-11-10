@@ -1,0 +1,137 @@
+<template>
+  <div
+    class="flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
+  >
+    <div class="w-full max-w-lg">
+      <h1 class="text-3xl font-semibold text-center text-gray-600 mb-4">
+        Submit Job Advertisement
+      </h1>
+      <form
+        @submit.prevent="submitJob"
+        class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+      >
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
+            Title
+          </label>
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="title"
+            type="text"
+            placeholder="Software Engineer"
+            v-model="job.title"
+          />
+        </div>
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="company"
+          >
+            Company
+          </label>
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="company"
+            type="text"
+            placeholder="Company A"
+            v-model="job.company"
+          />
+        </div>
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="location"
+          >
+            Location
+          </label>
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="location"
+            type="text"
+            placeholder="City, State"
+            v-model="job.location"
+          />
+        </div>
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="description"
+          >
+            Description
+          </label>
+          <textarea
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="description"
+            placeholder="Detailed job description"
+            v-model="job.description"
+            rows="4"
+          ></textarea>
+        </div>
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="employmentType"
+          >
+            Employment Type
+          </label>
+          <select
+            class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="employmentType"
+            v-model="job.employmentType"
+          >
+            <option value="full-time">Full-time</option>
+            <option value="part-time">Part-time</option>
+            <option value="contract">Contract</option>
+            <option value="internship">Internship</option>
+            <option value="temporary">Temporary</option>
+          </select>
+        </div>
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="applyLink"
+          >
+            Apply Link
+          </label>
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="applyLink"
+            type="url"
+            placeholder="https://your-apply-link.com"
+            v-model="job.applyLink"
+          />
+        </div>
+        <div class="flex items-center justify-center">
+          <button
+            class="bg-brand-blue-500 hover:bg-brand-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+            type="submit"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      job: {
+        title: "",
+        company: "",
+        location: "",
+        description: "",
+        employmentType: "full-time",
+        applyLink: "",
+      },
+    };
+  },
+  methods: {
+    async submitJob() {
+      console.log("Job submitted:", this.job);
+    },
+  },
+};
+</script>

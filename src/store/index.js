@@ -3,30 +3,31 @@ import { createStore } from "vuex";
 const store = createStore({
   state() {
     return {
-      isAuthenticated: false,
-      token: "",
+      token: localStorage.getItem("token") || "",
     };
   },
   getters: {
-    isAuthenticated: (state) => state.isAuthenticated,
+    isAuthenticated: (state) => !!state.token,
   },
   mutations: {
-    SET_AUTH(state, { isAuthenticated, token }) {
-      console.log(`Mutation: Setting isAuthenticated to ${isAuthenticated}`);
-      state.isAuthenticated = isAuthenticated;
+    SET_TOKEN(state, token) {
       state.token = token;
     },
   },
   actions: {
     login({ commit }, token) {
-      console.log("Action: Logging in");
-      commit("SET_AUTH", { isAuthenticated: true, token });
-      localStorage.setItem("token", token);
+      return new Promise((resolve) => {
+        commit("SET_TOKEN", token);
+        localStorage.setItem("token", token);
+        resolve();
+      });
     },
     logout({ commit }) {
-      console.log("Action: Logging out");
-      commit("SET_AUTH", { isAuthenticated: false, token: "" });
-      localStorage.removeItem("token");
+      return new Promise((resolve) => {
+        commit("SET_TOKEN", "");
+        localStorage.removeItem("token");
+        resolve();
+      });
     },
   },
 });

@@ -64,6 +64,8 @@
 <script>
 import axios from "axios";
 
+const apiURL = process.env.VUE_APP_API_URL;
+
 export default {
   data() {
     return {
@@ -85,7 +87,7 @@ export default {
 
       try {
         console.log("Sending POST request to /register");
-        await axios.post("/register", {
+        await axios.post(`${apiURL}/register`, {
           username: this.username,
           email: this.email,
           password: this.password,

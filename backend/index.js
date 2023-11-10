@@ -6,6 +6,7 @@ const bcrypt = require("bcryptjs");
 const cors = require("cors");
 
 const User = require("./models/userModel");
+const Job = require("./models/jobModel");
 
 const app = express();
 app.use(express.json());
@@ -45,6 +46,30 @@ app.post("/login", async (req, res) => {
 
   const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY);
   res.header("auth-token", token).send(token);
+});
+
+app.post("/api/jobEntries", async (req, res) => {
+  try {
+    const jobData = {
+      title: req.body.title,
+      company: req.body.company,
+      location: req.body.location,
+      description: req.body.description,
+      employmentType: req.body.employmentType,
+      postedDate: req.body.postedDate,
+      applyLink: req.body.applyLink,
+    };
+
+    const newJob = new Job(jobData);
+    await newJob.save();
+
+    res.status(201).json(newJob);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .send("An error occurred while posting the job advertisement.");
+  }
 });
 
 const jobEntries = [

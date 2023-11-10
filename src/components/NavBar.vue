@@ -149,7 +149,9 @@ import { mapState, mapActions } from "vuex";
 export default {
   name: "NavBar",
   computed: {
-    ...mapState(["isAuthenticated"]),
+    ...mapState({
+      isAuthenticated: (state) => !!state.token,
+    }),
   },
   methods: {
     ...mapActions(["logout"]),
@@ -157,8 +159,10 @@ export default {
       this.isOpen = !this.isOpen;
     },
     performLogout() {
-      this.logout();
-      this.closeMenu();
+      this.logout().then(() => {
+        this.$router.push({ name: "Home" });
+        this.closeMenu();
+      });
     },
     closeMenu() {
       this.isOpen = false;

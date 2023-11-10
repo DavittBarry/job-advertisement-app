@@ -53,6 +53,8 @@ import axios from "axios";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
+const apiURL = process.env.VUE_APP_API_URL;
+
 export default {
   setup() {
     const store = useStore();
@@ -62,12 +64,16 @@ export default {
 
     const login = async () => {
       try {
-        const response = await axios.post("/login", {
+        const response = await axios.post(`${apiURL}/login`, {
           username: username.value,
           password: password.value,
         });
-        store.dispatch("login", response.data);
-        router.push({ name: "Home" });
+        await store.dispatch("login", response.data);
+        if (router.currentRoute.value.query.redirect) {
+          router.push(router.currentRoute.value.query.redirect.toString());
+        } else {
+          router.push({ name: "Home" });
+        }
       } catch (error) {
         console.error("An error occurred during login:", error);
       }
