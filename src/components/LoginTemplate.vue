@@ -64,11 +64,17 @@ export default {
 
     const login = async () => {
       try {
+        console.log("Attempting login for:", username.value);
         const response = await axios.post(`${apiURL}/login`, {
           username: username.value,
           password: password.value,
         });
+        console.log("Login successful, received token:", response.data);
         await store.dispatch("login", response.data);
+        console.log(
+          "Login dispatched to store, current auth status:",
+          store.getters.isAuthenticated,
+        );
         if (router.currentRoute.value.query.redirect) {
           router.push(router.currentRoute.value.query.redirect.toString());
         } else {

@@ -41,7 +41,10 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  console.log(`Navigating from ${from.path} to ${to.path}`);
+  console.log("Current auth status:", store.getters.isAuthenticated);
   if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
+    console.warn("Not authenticated, redirecting to Login.");
     next({ name: "Login" });
   } else {
     next();

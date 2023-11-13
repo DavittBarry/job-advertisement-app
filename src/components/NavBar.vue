@@ -1,5 +1,5 @@
 <template>
-  <nav :key="isAuthenticated" class="bg-brand-nav-bg-light">
+  <nav class="bg-brand-nav-bg-light">
     <!-- Desktop view -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
@@ -102,7 +102,7 @@
       :class="{ block: isOpen, hidden: !isOpen }"
       class="lg:hidden text-center"
     >
-      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+      <div class="px-2 pt-2 pb-3 space-y-4 sm:px-3 text-lg">
         <router-link
           to="/jobs"
           class="text-gray-600 font-semibold p-2 rounded-lg hover:bg-logo-container-bg hover:text-gray-900 transition"
@@ -114,7 +114,7 @@
         <div class="flex row justify-center space-x-2">
           <router-link to="/login" v-if="!isAuthenticated" @click="closeMenu">
             <button
-              class="bg-brand-blue-600 text-white p-2 mt-4 w-[74.57px] rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 focus:ring focus:ring-brand-blue-200 transition"
+              class="bg-brand-blue-600 text-white p-2 mt-2 w-[74.57px] rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 focus:ring focus:ring-brand-blue-200 transition"
             >
               Login
             </button>
@@ -125,7 +125,7 @@
             @click="closeMenu"
           >
             <button
-              class="bg-brand-blue-600 text-white p-2 mt-4 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 mb-2 focus:ring focus:ring-brand-blue-200 transition"
+              class="bg-brand-blue-600 text-white p-2 mt-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 mb-2 focus:ring focus:ring-brand-blue-200 transition"
             >
               Register
             </button>
@@ -133,7 +133,7 @@
           <button
             v-if="isAuthenticated"
             @click="performLogout"
-            class="bg-brand-blue-600 text-white p-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 mb-2 focus:ring focus:ring-brand-blue-200 transition"
+            class="bg-brand-blue-600 text-white p-2 mt-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 mb-2 focus:ring focus:ring-brand-blue-200 transition"
           >
             Logout
           </button>
@@ -159,10 +159,16 @@ export default {
       this.isOpen = !this.isOpen;
     },
     performLogout() {
-      this.logout().then(() => {
-        this.$router.push({ name: "Home" });
-        this.closeMenu();
-      });
+      console.log("Logout action triggered");
+      this.logout()
+        .then(() => {
+          console.log("Logout successful, redirecting to home");
+          this.$router.push({ name: "Home" });
+          this.closeMenu();
+        })
+        .catch((error) => {
+          console.error("Logout failed with error:", error);
+        });
     },
     closeMenu() {
       this.isOpen = false;

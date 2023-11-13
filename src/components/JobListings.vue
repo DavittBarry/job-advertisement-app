@@ -18,7 +18,7 @@
 <script>
 import axios from "axios";
 import JobCard from "./JobCard.vue";
-import { mapState, mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 const apiURL = process.env.VUE_APP_API_URL;
 
@@ -29,19 +29,27 @@ export default {
     };
   },
   computed: {
-    ...mapState(["isAuthenticated"]),
+    ...mapGetters(["isAuthenticated"]),
   },
   methods: {
     ...mapActions(["logout"]),
     navigateToJobSubmission() {
+      console.log("Button clicked, current auth status:", this.isAuthenticated);
       if (this.isAuthenticated) {
+        console.log("User is authenticated, navigating to job form.");
         this.$router.push("/submit-job-form");
       } else {
+        console.warn("User not authenticated, navigating to login.");
         this.$router.push({
           name: "Login",
           query: { redirect: "/submit-job-form" },
         });
       }
+    },
+  },
+  watch: {
+    isAuthenticated(newValue) {
+      console.log("isAuthenticated changed to", newValue);
     },
   },
   components: {
