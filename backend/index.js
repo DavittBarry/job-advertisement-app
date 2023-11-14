@@ -19,7 +19,6 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 app.post("/register", async (req, res) => {
   const { username, password, email } = req.body;
-  console.log(req.body);
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ username, email, password: hashedPassword });
@@ -37,15 +36,22 @@ app.post("/register", async (req, res) => {
 
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
-  const user = await User.findOne({ username });
-  if (!user) return res.status(400).send("Invalid username or password");
+  try {
+    const user = await User.findOne({ username });
+    if (!user) {
+      throw new Error("Invalid username or password");
+    }
 
-  const validPassword = await bcrypt.compare(password, user.password);
-  if (!validPassword)
-    return res.status(400).send("Invalid username or password");
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      throw new Error("Invalid username or password");
+    }
 
-  const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY);
-  res.header("auth-token", token).send(token);
+    const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY);
+    res.header("auth-token", token).send(token);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 });
 
 app.post("/api/jobEntries", async (req, res) => {

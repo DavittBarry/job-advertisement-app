@@ -145,6 +145,8 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
+import { globalErrorMiddleware } from "../middleware/errorMiddleware";
+import { handleLogoutSuccess } from "../middleware/successHandlers";
 
 export default {
   name: "NavBar",
@@ -159,15 +161,14 @@ export default {
       this.isOpen = !this.isOpen;
     },
     performLogout() {
-      console.log("Logout action triggered");
       this.logout()
         .then(() => {
-          console.log("Logout successful, redirecting to home");
+          handleLogoutSuccess();
           this.$router.push({ name: "Home" });
           this.closeMenu();
         })
         .catch((error) => {
-          console.error("Logout failed with error:", error);
+          globalErrorMiddleware(error);
         });
     },
     closeMenu() {

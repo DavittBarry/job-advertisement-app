@@ -34,22 +34,14 @@ export default {
   methods: {
     ...mapActions(["logout"]),
     navigateToJobSubmission() {
-      console.log("Button clicked, current auth status:", this.isAuthenticated);
       if (this.isAuthenticated) {
-        console.log("User is authenticated, navigating to job form.");
         this.$router.push("/submit-job-form");
       } else {
-        console.warn("User not authenticated, navigating to login.");
         this.$router.push({
           name: "Login",
           query: { redirect: "/submit-job-form" },
         });
       }
-    },
-  },
-  watch: {
-    isAuthenticated(newValue) {
-      console.log("isAuthenticated changed to", newValue);
     },
   },
   components: {

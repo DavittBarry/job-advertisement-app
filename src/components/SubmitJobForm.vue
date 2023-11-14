@@ -116,6 +116,7 @@
 
 <script>
 import axios from "axios";
+import { handleJobSubmitSuccess } from "../middleware/successHandlers";
 
 export default {
   data() {
@@ -155,7 +156,9 @@ export default {
           `${process.env.VUE_APP_API_URL}/api/jobEntries`,
           this.job,
         );
-        console.log("Job submitted successfully:", response.data);
+
+        handleJobSubmitSuccess(response);
+
         this.$router.push("/jobs");
       } catch (error) {
         console.error("An error occurred while submitting the job:", error);

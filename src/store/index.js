@@ -12,7 +12,6 @@ const store = createStore({
   mutations: {
     SET_TOKEN(state, token) {
       if (token !== undefined) {
-        console.log("SET_TOKEN mutation called with", token);
         state.token = token;
       } else {
         console.error("Attempted to set token with undefined");

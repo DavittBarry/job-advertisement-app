@@ -52,6 +52,8 @@ import { ref } from "vue";
 import axios from "axios";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import { globalErrorMiddleware } from "../middleware/errorMiddleware";
+import { handleLoginSuccess } from "../middleware/successHandlers";
 
 const apiURL = process.env.VUE_APP_API_URL;
 
@@ -64,17 +66,14 @@ export default {
 
     const login = async () => {
       try {
-        console.log("Attempting login for:", username.value);
         const response = await axios.post(`${apiURL}/login`, {
           username: username.value,
           password: password.value,
         });
-        console.log("Login successful, received token:", response.data);
+
+        handleLoginSuccess(response);
+
         await store.dispatch("login", response.data);
-        console.log(
-          "Login dispatched to store, current auth status:",
-          store.getters.isAuthenticated,
-        );
         if (router.currentRoute.value.query.redirect) {
           router.push(router.currentRoute.value.query.redirect.toString());
         } else {
@@ -82,6 +81,7 @@ export default {
         }
       } catch (error) {
         console.error("An error occurred during login:", error);
+        globalErrorMiddleware(error);
       }
     };
 

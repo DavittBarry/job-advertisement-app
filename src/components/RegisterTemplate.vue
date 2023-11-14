@@ -63,6 +63,8 @@
 
 <script>
 import axios from "axios";
+import { handleRegisterSuccess } from "../middleware/successHandlers";
+import { globalErrorMiddleware } from "../middleware/errorMiddleware";
 
 const apiURL = process.env.VUE_APP_API_URL;
 
@@ -78,24 +80,24 @@ export default {
   },
   methods: {
     async register() {
-      console.log("Attempting to register:", this.isSubmitting);
       if (this.isSubmitting) return;
       this.isSubmitting = true;
       this.errorMessage = "";
 
-      console.log("Register method triggered");
-
       try {
-        console.log("Sending POST request to /register");
-        await axios.post(`${apiURL}/register`, {
+        const response = await axios.post(`${apiURL}/register`, {
           username: this.username,
           email: this.email,
           password: this.password,
         });
-        console.log("POST request sent");
+
+        handleRegisterSuccess(response);
+        this.$router.push("/login");
+
         this.isSubmitting = false;
       } catch (error) {
         console.error("Error in POST request:", error);
+        globalErrorMiddleware(error);
         this.isSubmitting = false;
         if (error.response) {
           this.errorMessage =
