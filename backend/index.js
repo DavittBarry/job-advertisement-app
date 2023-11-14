@@ -72,26 +72,13 @@ app.post("/api/jobEntries", async (req, res) => {
   }
 });
 
-const jobEntries = [
-  {
-    title: "Software Engineer",
-    company: "Company A",
-    description: "Job description here",
-  },
-  {
-    title: "Data Analyst",
-    company: "Company B",
-    description: "Analyze data and create reports",
-  },
-  {
-    title: "UI/UX Designer",
-    company: "Company C",
-    description: "Design user interfaces and experiences",
-  },
-];
-
-app.get("/api/jobEntries", (req, res) => {
-  res.json(jobEntries);
+app.get("/api/jobEntries", async (req, res) => {
+  try {
+    const jobEntries = await Job.find();
+    res.json(jobEntries);
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
 const PORT = process.env.BACKEND_PORT || 4000;

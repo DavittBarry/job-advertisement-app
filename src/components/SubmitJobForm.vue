@@ -91,13 +91,13 @@
             class="block text-gray-700 text-sm font-bold mb-2"
             for="applyLink"
           >
-            Apply Link
+            Advertisement Link
           </label>
           <input
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="applyLink"
-            type="url"
-            placeholder="https://your-apply-link.com"
+            type="text"
+            placeholder="https://advertisement-link.com"
             v-model="job.applyLink"
           />
         </div>
@@ -115,6 +115,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -126,11 +128,38 @@ export default {
         employmentType: "full-time",
         applyLink: "",
       },
+      applyLinkError: "",
     };
   },
   methods: {
+    isValidHttpUrl(string) {
+      if (
+        string.startsWith("http://") ||
+        string.startsWith("https://") ||
+        string.startsWith("www.")
+      ) {
+        return true;
+      }
+      return false;
+    },
     async submitJob() {
-      console.log("Job submitted:", this.job);
+      if (!this.isValidHttpUrl(this.job.applyLink)) {
+        this.applyLinkError =
+          "Please enter a valid URL (starting with https://, http://, or www.)";
+        return;
+      }
+
+      this.applyLinkError = "";
+      try {
+        const response = await axios.post(
+          `${process.env.VUE_APP_API_URL}/api/jobEntries`,
+          this.job,
+        );
+        console.log("Job submitted successfully:", response.data);
+        this.$router.push("/jobs");
+      } catch (error) {
+        console.error("An error occurred while submitting the job:", error);
+      }
     },
   },
 };
