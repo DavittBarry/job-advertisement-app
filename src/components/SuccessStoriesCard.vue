@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="flex p-4 bg-white border rounded-lg shadow-md hover:shadow-lg transition cursor-pointer"
-  >
+  <div class="flex p-4 bg-white border rounded-lg shadow-md">
     <div class="flex-grow">
       <h3 class="text-xl font-semibold mb-2">{{ story.jobTitle }}</h3>
       <p class="text-sm text-gray-600 mb-2">

@@ -1,11 +1,12 @@
 function showSuccess(message) {
   const wrapperDiv = document.createElement("div");
-  wrapperDiv.className = "fixed inset-0 flex items-center justify-center z-50";
+  wrapperDiv.className =
+    "fixed top-0 left-0 right-0 flex items-start justify-center z-50";
 
   const successDiv = document.createElement("div");
   successDiv.innerText = message;
   successDiv.className =
-    "bg-brand-green-500 text-white p-4 rounded-lg shadow-lg max-w-xs mx-2";
+    "bg-brand-green-500 text-white p-4 rounded-lg shadow-lg max-w-xs mx-2 mt-1";
 
   wrapperDiv.appendChild(successDiv);
 

@@ -5,6 +5,7 @@ import JobListings from "../components/JobListings.vue";
 import RegisterTemplate from "../components/RegisterTemplate.vue";
 import LoginTemplate from "../components/LoginTemplate.vue";
 import SubmitJobForm from "../components/SubmitJobForm.vue";
+import JobDetails from "../components/JobDetails.vue";
 
 const routes = [
   {
@@ -32,6 +33,11 @@ const routes = [
     name: "SubmitJob",
     component: SubmitJobForm,
     meta: { requiresAuth: true },
+  },
+  {
+    path: "/jobs/:id",
+    name: "JobDetails",
+    component: JobDetails,
   },
 ];
 

@@ -1,5 +1,6 @@
 <template>
   <div
+    @click="goToJobDetails"
     class="p-4 bg-brand-nav-bg-light border ml-6 mr-6 rounded-lg shadow-md hover:shadow-lg transition cursor-pointer"
   >
     <h2 class="text-xl font-semibold mb-2">{{ job.title }}</h2>
@@ -34,6 +35,9 @@ export default {
         return text.substring(0, maxLength) + "...";
       }
       return text;
+    },
+    goToJobDetails() {
+      this.$router.push({ name: "JobDetails", params: { id: this.job._id } });
     },
   },
 };

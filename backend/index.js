@@ -87,6 +87,20 @@ app.get("/api/jobEntries", async (req, res) => {
   }
 });
 
+app.get("/api/jobEntries/:id", async (req, res) => {
+  try {
+    const jobEntry = await Job.findById(req.params.id);
+    if (jobEntry) {
+      res.json(jobEntry);
+    } else {
+      res.status(404).send("Job not found");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("An error occurred while fetching the job details.");
+  }
+});
+
 app.get("/api/storyEntries", async (req, res) => {
   const hardcodedStories = [
     {
@@ -94,7 +108,7 @@ app.get("/api/storyEntries", async (req, res) => {
       jobTitle: "Web Developer",
       location: "San Francisco, CA",
       story:
-        "Alice found her dream job as a web developer and has been making impactful contributions to her company's product.",
+        "Alice found her dream job and has been making impactful contributions to her company's product.",
       postedDate: new Date(),
       imageUrl:
         "https://images.pexels.com/photos/762080/pexels-photo-762080.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
@@ -104,7 +118,7 @@ app.get("/api/storyEntries", async (req, res) => {
       jobTitle: "Data Analyst",
       location: "New York, NY",
       story:
-        "Michael's passion for data helped him secure a position at a leading firm, where he now leads a team of analysts.",
+        "Michael's passion for data helped him secure a position where he now leads a team of analysts.",
       postedDate: new Date(),
       imageUrl:
         "https://images.pexels.com/photos/819530/pexels-photo-819530.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
@@ -114,7 +128,7 @@ app.get("/api/storyEntries", async (req, res) => {
       jobTitle: "Graphic Designer",
       location: "Austin, TX",
       story:
-        "Anthony's creativity caught the eye of a major advertising agency, and he now works on exciting international campaigns.",
+        "Anthony's creativity caught the eye of an advertising agency. He now works internationally.",
       postedDate: new Date(),
       imageUrl:
         "https://images.pexels.com/photos/2102416/pexels-photo-2102416.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",

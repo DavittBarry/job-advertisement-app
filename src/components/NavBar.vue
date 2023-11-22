@@ -24,7 +24,7 @@
         <div class="hidden lg:flex lg:items-center lg:justify-center lg:flex-1">
           <router-link
             to="/jobs"
-            class="text-gray-600 font-semibold p-1 rounded-lg hover:bg-logo-container-bg hover:text-gray-900 transition"
+            class="text-gray-600 bg-white text-2xl font-semibold ml-3 mr-3 p-1 rounded-lg hover:bg-logo-container-bg hover:text-gray-900 transition"
             active-class="bg-logo-container-bg text-gray-900"
           >
             Jobs
@@ -100,12 +100,12 @@
     <!-- Mobile view -->
     <div
       :class="{ block: isOpen, hidden: !isOpen }"
-      class="lg:hidden text-center"
+      class="lg:hidden text-center fixed inset-13 h-1/8 w-full z-50 bg-brand-nav-bg-light"
     >
-      <div class="px-2 pt-2 pb-3 space-y-4 sm:px-3 text-lg">
+      <div class="px-2 pt-2 pb-3 space-y-4 mt-6 sm:px-3 text-lg">
         <router-link
           to="/jobs"
-          class="text-gray-600 font-semibold p-2 rounded-lg hover:bg-logo-container-bg hover:text-gray-900 transition"
+          class="text-gray-600 bg-white mt-6 text-2xl font-semibold p-2 rounded-lg hover:bg-logo-container-bg hover:text-gray-900 transition"
           active-class="bg-logo-container-bg text-gray-900"
           @click="closeMenu"
         >
