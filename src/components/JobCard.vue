@@ -21,11 +21,11 @@ export default {
   props: ["job"],
   computed: {
     truncatedDescriptionDesktop() {
-      const maxLengthDesktop = 100;
+      const maxLengthDesktop = 200;
       return this.truncateText(this.job.description, maxLengthDesktop);
     },
     truncatedDescriptionMobile() {
-      const maxLengthMobile = 50;
+      const maxLengthMobile = 200;
       return this.truncateText(this.job.description, maxLengthMobile);
     },
   },

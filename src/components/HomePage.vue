@@ -16,12 +16,14 @@
       </div>
       <div class="flex justify-center mt-4 mb-10">
         <input
+          v-model="searchTerm"
           type="text"
           placeholder="Search for jobs..."
-          class="p-3 border border-gray-300 rounded-l-lg text-sm"
+          class="p-3 border border-gray-300 rounded-l-lg text-sm w-full max-w-md"
         />
         <button
-          class="bg-brand-blue-600 text-white p-3 rounded-r-lg hover:bg-brand-blue-700 focus:outline-none focus:ring-2 focus:ring-brand-blue-200 focus:ring-opacity-50 transition duration-300 shadow"
+          @click="search"
+          class="bg-brand-blue-600 text-white p-3 rounded-r-lg hover:bg-brand-blue-700 focus:outline-none focus:ring-2 focus:ring-brand-blue-200 focus:ring-opacity-50 transition duration-300 shadow w-auto"
         >
           Search
         </button>
@@ -51,7 +53,6 @@ import axios from "axios";
 import jobSearchImage from "@/assets/jobsearch.jpeg";
 import JobCard from "./JobCard.vue";
 import SuccessStories from "./SuccessStories.vue";
-
 const apiURL = process.env.VUE_APP_API_URL;
 
 export default {
@@ -59,6 +60,7 @@ export default {
     return {
       jobSearchImage: jobSearchImage,
       jobs: [],
+      searchTerm: "",
     };
   },
   name: "HomePage",
@@ -70,6 +72,14 @@ export default {
     getRandomJobs(jobs, count) {
       let shuffled = jobs.sort(() => 0.5 - Math.random());
       return shuffled.slice(0, count);
+    },
+    search() {
+      if (this.searchTerm.trim()) {
+        this.$router.push({
+          name: "SearchResults",
+          query: { q: this.searchTerm.trim() },
+        });
+      }
     },
   },
   async mounted() {

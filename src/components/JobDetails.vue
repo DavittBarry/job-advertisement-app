@@ -30,6 +30,12 @@
         </div>
       </div>
     </div>
+    <button
+      @click="goBack"
+      class="bg-brand-blue-600 mt-6 p-4 rounded text-white hover:bg-brand-blue-400 transition duration-300"
+    >
+      Back
+    </button>
   </div>
   <div
     v-else
@@ -41,12 +47,22 @@
 
 <script>
 import axios from "axios";
+import { useRouter } from "vue-router";
 
 export default {
   data() {
     return {
       job: null,
     };
+  },
+  setup() {
+    const router = useRouter();
+
+    function goBack() {
+      router.go(-1);
+    }
+
+    return { goBack };
   },
   created() {
     this.fetchJobDetails();
