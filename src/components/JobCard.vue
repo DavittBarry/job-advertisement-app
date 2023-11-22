@@ -1,6 +1,6 @@
 <template>
   <div
-    class="p-4 border rounded-lg shadow-md bg-white hover:shadow-lg transition cursor-pointer"
+    class="p-4 bg-brand-nav-bg-light border ml-6 mr-6 rounded-lg shadow-md hover:shadow-lg transition cursor-pointer"
   >
     <h2 class="text-xl font-semibold mb-2">{{ job.title }}</h2>
     <p class="text-sm text-gray-600 mb-2">
@@ -20,11 +20,11 @@ export default {
   props: ["job"],
   computed: {
     truncatedDescriptionDesktop() {
-      const maxLengthDesktop = 50;
+      const maxLengthDesktop = 100;
       return this.truncateText(this.job.description, maxLengthDesktop);
     },
     truncatedDescriptionMobile() {
-      const maxLengthMobile = 25;
+      const maxLengthMobile = 50;
       return this.truncateText(this.job.description, maxLengthMobile);
     },
   },
@@ -48,7 +48,7 @@ export default {
   display: none;
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 1200px) {
   .desktop-only {
     display: none;
   }

@@ -30,11 +30,13 @@
   </div>
   <div>
     <h2 class="text-3xl text-center font-semibold my-6">Featured Jobs</h2>
-    <!-- Featured job cards here soon-->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <JobCard v-for="job in jobs" :key="job.title" :job="job" />
+    </div>
   </div>
   <div>
     <h2 class="text-3xl text-center font-semibold my-6">Success Stories</h2>
-    <!-- Testimonials here soon-->
+    <SuccessStories />
   </div>
 </template>
 
@@ -45,14 +47,38 @@
 </style>
 
 <script>
+import axios from "axios";
 import jobSearchImage from "@/assets/jobsearch.jpeg";
+import JobCard from "./JobCard.vue";
+import SuccessStories from "./SuccessStories.vue";
+
+const apiURL = process.env.VUE_APP_API_URL;
 
 export default {
   data() {
     return {
       jobSearchImage: jobSearchImage,
+      jobs: [],
     };
   },
   name: "HomePage",
+  components: {
+    JobCard,
+    SuccessStories,
+  },
+  methods: {
+    getRandomJobs(jobs, count) {
+      let shuffled = jobs.sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, count);
+    },
+  },
+  async mounted() {
+    try {
+      const response = await axios.get(`${apiURL}/api/jobEntries`);
+      this.jobs = this.getRandomJobs(response.data, 3);
+    } catch (error) {
+      console.error("An error occurred while fetching data: ", error);
+    }
+  },
 };
 </script>

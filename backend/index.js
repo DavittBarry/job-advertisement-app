@@ -87,6 +87,43 @@ app.get("/api/jobEntries", async (req, res) => {
   }
 });
 
+app.get("/api/storyEntries", async (req, res) => {
+  const hardcodedStories = [
+    {
+      name: "Alice Johnson",
+      jobTitle: "Web Developer",
+      location: "San Francisco, CA",
+      story:
+        "Alice found her dream job as a web developer and has been making impactful contributions to her company's product.",
+      postedDate: new Date(),
+      imageUrl:
+        "https://images.pexels.com/photos/762080/pexels-photo-762080.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    },
+    {
+      name: "Michael Smith",
+      jobTitle: "Data Analyst",
+      location: "New York, NY",
+      story:
+        "Michael's passion for data helped him secure a position at a leading firm, where he now leads a team of analysts.",
+      postedDate: new Date(),
+      imageUrl:
+        "https://images.pexels.com/photos/819530/pexels-photo-819530.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    },
+    {
+      name: "Anthony Bloom",
+      jobTitle: "Graphic Designer",
+      location: "Austin, TX",
+      story:
+        "Anthony's creativity caught the eye of a major advertising agency, and he now works on exciting international campaigns.",
+      postedDate: new Date(),
+      imageUrl:
+        "https://images.pexels.com/photos/2102416/pexels-photo-2102416.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    },
+  ];
+
+  res.json(hardcodedStories);
+});
+
 const PORT = process.env.BACKEND_PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
