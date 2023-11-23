@@ -9,7 +9,9 @@
         Submit job advertisement
       </button>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+    >
       <JobCard v-for="job in jobs" :key="job.title" :job="job" />
     </div>
   </div>
@@ -57,3 +59,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.job-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  justify-content: center;
+}
+</style>

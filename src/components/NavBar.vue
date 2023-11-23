@@ -86,6 +86,15 @@
                 Register
               </button>
             </router-link>
+            <div class="flex justify-center my-4">
+              <button
+                v-if="isAuthenticated"
+                @click="navigateToJobSubmission"
+                class="bg-brand-blue-600 text-white p-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 focus:ring focus:ring-brand-blue-200 transition"
+              >
+                Submit job advertisement
+              </button>
+            </div>
             <button
               v-if="isAuthenticated"
               @click="performLogout"
@@ -130,6 +139,15 @@
               Register
             </button>
           </router-link>
+          <div class="flex justify-center">
+            <button
+              v-if="isAuthenticated"
+              @click="navigateToJobSubmission"
+              class="bg-brand-blue-600 text-white p-2 mt-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 mb-2 focus:ring focus:ring-brand-blue-200 transition"
+            >
+              Submit job advertisement
+            </button>
+          </div>
           <button
             v-if="isAuthenticated"
             @click="performLogout"
@@ -170,6 +188,16 @@ export default {
         .catch((error) => {
           globalErrorMiddleware(error);
         });
+    },
+    navigateToJobSubmission() {
+      if (this.isAuthenticated) {
+        this.$router.push("/submit-job-form");
+      } else {
+        this.$router.push({
+          name: "Login",
+          query: { redirect: "/submit-job-form" },
+        });
+      }
     },
     closeMenu() {
       this.isOpen = false;

@@ -7,14 +7,14 @@
       class="hero-overlay bg-opacity-60 bg-black flex flex-col justify-center"
     >
       <div class="text-center hero-content text-white">
-        <div class="max-w-md mx-auto">
+        <div class="max-w-lg mx-auto px-4">
           <h1 class="mb-5 mt-6 text-5xl font-bold">
             Welcome to the Job Finder!
           </h1>
           <p class="mb-5">Find your next dream job.</p>
         </div>
       </div>
-      <div class="flex justify-center mt-4 mb-10">
+      <div class="flex justify-center mt-4 mb-10 px-4">
         <input
           v-model="searchTerm"
           type="text"
@@ -30,9 +30,11 @@
       </div>
     </div>
   </div>
-  <div>
-    <h2 class="text-3xl text-center font-semibold my-6">Featured Jobs</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+  <div class="py-6">
+    <h2 class="text-3xl text-center font-semibold my-4">Featured Jobs</h2>
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4"
+    >
       <JobCard v-for="job in jobs" :key="job.title" :job="job" />
     </div>
   </div>
@@ -89,7 +91,7 @@ export default {
   async mounted() {
     try {
       const response = await axios.get(`${apiURL}/api/jobEntries`);
-      this.jobs = this.getRandomJobs(response.data, 3);
+      this.jobs = this.getRandomJobs(response.data, 4);
     } catch (error) {
       console.error("An error occurred while fetching data: ", error);
     }

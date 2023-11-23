@@ -3,9 +3,13 @@
     <h1 class="mb-5 text-center mt-6 text-3xl font-bold">Search Results</h1>
     <p v-if="loading" class="text-center">Loading...</p>
     <p v-else-if="!filteredJobs.length" class="text-center">No results.</p>
-    <template v-else>
+    <p v-else class="text-center mb-6">{{ resultCount }}</p>
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 m-4 justify-items-center"
+    >
       <JobCard v-for="job in filteredJobs" :key="job._id" :job="job" />
-    </template>
+    </div>
+
     <div class="flex justify-center mt-6">
       <button
         @click="goBack"
@@ -38,7 +42,12 @@ export default {
         job.title.toLowerCase().includes(this.searchQuery.toLowerCase()),
       );
     },
+    resultCount() {
+      const count = this.filteredJobs.length;
+      return `${count} ${count === 1 ? "result" : "results"} found.`;
+    },
   },
+
   async created() {
     this.searchQuery = this.$route.query.q;
     await this.fetchJobs();
