@@ -1,7 +1,7 @@
 <template>
   <div
     @click="goToJobDetails"
-    class="max-w-md p-4 bg-brand-nav-bg-light border rounded-lg shadow-md hover:shadow-lg transition cursor-pointer"
+    class="w-full p-4 bg-brand-nav-bg-light border rounded-lg shadow-md hover:shadow-lg transition cursor-pointer"
   >
     <h2 class="text-xl font-semibold mb-2">{{ job.title }}</h2>
     <p class="text-sm text-gray-600 mb-2">
@@ -49,7 +49,7 @@ export default {
 }
 
 .card {
-  @apply max-w-md mx-auto;
+  @apply max-w-md mx-auto w-full;
 }
 
 .mobile-only {

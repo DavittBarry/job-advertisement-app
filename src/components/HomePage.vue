@@ -23,7 +23,7 @@
         />
         <button
           @click="search"
-          class="bg-brand-blue-600 text-white p-3 rounded-r-lg hover:bg-brand-blue-400 focus:outline-none focus:ring-2 focus:ring-brand-blue-200 focus:ring-opacity-50 transition duration-300 shadow w-auto"
+          class="bg-brand-blue-600 text-white p-3 rounded-r-lg hover:bg-brand-green-500 focus:outline-none focus:ring-2 focus:ring-brand-blue-200 focus:ring-opacity-50 transition duration-300 shadow w-auto"
         >
           Search
         </button>

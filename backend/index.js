@@ -80,7 +80,12 @@ app.post("/api/jobEntries", async (req, res) => {
 
 app.get("/api/jobEntries", async (req, res) => {
   try {
-    const jobEntries = await Job.find();
+    let query = {};
+    if (req.query.employmentType && req.query.employmentType !== "All") {
+      query.employmentType = req.query.employmentType;
+    }
+
+    const jobEntries = await Job.find(query);
     res.json(jobEntries);
   } catch (error) {
     res.status(500).send(error);

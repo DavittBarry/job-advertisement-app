@@ -23,7 +23,7 @@
           <a
             :href="job.applyLink"
             target="_blank"
-            class="bg-brand-blue-600 p-4 rounded text-white hover:bg-brand-blue-400 transition duration-300"
+            class="bg-brand-blue-600 p-4 rounded text-white hover:bg-brand-green-500 transition duration-300"
           >
             Apply Now
           </a>
@@ -32,7 +32,7 @@
     </div>
     <button
       @click="goBack"
-      class="bg-brand-blue-600 mt-6 p-4 rounded text-white hover:bg-brand-blue-400 transition duration-300"
+      class="bg-brand-blue-600 mt-6 p-4 rounded text-white hover:bg-brand-green-500 transition duration-300"
     >
       Back
     </button>
