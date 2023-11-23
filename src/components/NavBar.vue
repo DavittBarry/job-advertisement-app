@@ -23,11 +23,11 @@
         </div>
         <div class="hidden lg:flex lg:items-center lg:justify-center lg:flex-1">
           <router-link
-            to="/jobs"
+            to="/job-listings"
             class="text-gray-600 bg-white text-2xl font-semibold ml-3 mr-3 p-1 rounded-lg hover:bg-logo-container-bg hover:text-gray-900 transition"
             active-class="bg-logo-container-bg text-gray-900"
           >
-            Jobs
+            Job listings
           </router-link>
         </div>
         <div class="lg:hidden flex items-center">
@@ -92,7 +92,7 @@
                 @click="navigateToJobSubmission"
                 class="bg-brand-blue-600 text-white p-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 focus:ring focus:ring-brand-blue-200 transition"
               >
-                Submit job advertisement
+                Post a job
               </button>
             </div>
             <router-link to="/profile" v-if="isAuthenticated">
@@ -120,12 +120,12 @@
     >
       <div class="px-2 pt-2 pb-3 space-y-4 mt-6 sm:px-3 text-lg">
         <router-link
-          to="/jobs"
+          to="/job-listings"
           class="text-gray-600 bg-white mt-6 text-2xl font-semibold p-2 rounded-lg hover:bg-logo-container-bg hover:text-gray-900 transition"
           active-class="bg-logo-container-bg text-gray-900"
           @click="closeMenu"
         >
-          Jobs
+          Job listings
         </router-link>
         <div class="flex row justify-center space-x-2">
           <router-link to="/login" v-if="!isAuthenticated" @click="closeMenu">
@@ -152,7 +152,7 @@
               @click="navigateToJobSubmission"
               class="bg-brand-blue-600 text-white p-2 mt-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 mb-2 focus:ring focus:ring-brand-blue-200 transition"
             >
-              Submit job advertisement
+              Post a job
             </button>
           </div>
           <router-link to="/profile" v-if="isAuthenticated" @click="closeMenu">

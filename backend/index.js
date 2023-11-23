@@ -153,6 +153,35 @@ app.delete("/api/jobEntries/:id", verifyToken, async (req, res) => {
   }
 });
 
+// Updates a job entry
+app.put("/api/jobEntries/:id", verifyToken, async (req, res) => {
+  try {
+    const jobUpdateData = {
+      title: req.body.title,
+      company: req.body.company,
+      location: req.body.location,
+      description: req.body.description,
+      employmentType: req.body.employmentType,
+      applyLink: req.body.applyLink,
+    };
+
+    const updatedJob = await Job.findByIdAndUpdate(
+      req.params.id,
+      jobUpdateData,
+      { new: true },
+    );
+
+    if (!updatedJob) {
+      return res.status(404).send("Job not found");
+    }
+
+    res.json(updatedJob);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("An error occurred while updating the job entry.");
+  }
+});
+
 app.get("/api/storyEntries", async (req, res) => {
   const hardcodedStories = [
     {

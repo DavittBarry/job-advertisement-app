@@ -6,7 +6,10 @@
     </div>
 
     <!-- User's job posts -->
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div
+      v-if="userJobs.length > 0"
+      class="grid md:grid-cols-2 lg:grid-cols-3 gap-4"
+    >
       <div
         v-for="job in userJobs"
         :key="job._id"
@@ -31,12 +34,16 @@
         </div>
       </div>
     </div>
+
+    <div v-else class="text-center text-gray-800 text-lg">
+      You have no posts.
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import { showSuccess } from "../middleware/successHandlers";
+import { showSuccess, showConfirmation } from "@/middleware/successHandlers";
 
 const apiURL = process.env.VUE_APP_API_URL;
 
@@ -59,7 +66,7 @@ export default {
       }
     },
     editJob(jobId) {
-      this.$router.push({ name: "EditJob", params: { id: jobId } });
+      this.$router.push({ name: "EditJob", params: { editId: jobId } });
     },
     async deleteJob(jobId) {
       try {
@@ -67,19 +74,17 @@ export default {
           headers: { "auth-token": this.$store.state.authToken },
         });
         this.fetchUserJobs();
-        this.showDeleteSuccess();
+        showSuccess("Job deleted successfully");
       } catch (error) {
         console.error("Error deleting job: ", error);
       }
     },
     confirmAndDeleteJob(jobId) {
-      if (confirm("Are you sure you want to delete this job?")) {
-        this.deleteJob(jobId);
-      }
-    },
-    showDeleteSuccess() {
-      const successMessage = "Job deleted successfully";
-      showSuccess(successMessage);
+      showConfirmation(
+        "Are you sure you want to delete this job?",
+        () => this.deleteJob(jobId),
+        () => console.log("Deletion cancelled"),
+      );
     },
   },
   mounted() {

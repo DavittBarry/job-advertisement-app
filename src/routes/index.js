@@ -7,6 +7,7 @@ import LoginTemplate from "../components/LoginTemplate.vue";
 import SubmitJobForm from "../components/SubmitJobForm.vue";
 import JobDetails from "../components/JobDetails.vue";
 import UserProfile from "../components/UserProfile.vue";
+import EditJobForm from "../components/EditJobForm.vue";
 
 const routes = [
   {
@@ -15,8 +16,8 @@ const routes = [
     component: HomePage,
   },
   {
-    path: "/jobs",
-    name: "Jobs",
+    path: "/job-listings",
+    name: "Job listings",
     component: JobListings,
   },
   {
@@ -50,6 +51,12 @@ const routes = [
     name: "Profile",
     component: UserProfile,
     meta: { requiresAuth: true },
+  },
+  {
+    path: "/edit-job/:editId",
+    name: "EditJob",
+    component: EditJobForm,
+    props: true,
   },
 ];
 

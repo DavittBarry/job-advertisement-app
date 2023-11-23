@@ -4,7 +4,7 @@
   >
     <div class="w-full max-w-lg">
       <h1 class="text-3xl font-semibold text-center text-gray-600 mb-4">
-        Submit Job Advertisement
+        Edit Job Advertisement
       </h1>
       <form
         @submit.prevent="submitJob"
@@ -106,7 +106,7 @@
             class="bg-brand-blue-500 hover:bg-brand-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
             type="submit"
           >
-            Submit
+            Apply
           </button>
         </div>
       </form>
