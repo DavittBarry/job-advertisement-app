@@ -9,7 +9,7 @@
         Submit job advertisement
       </button>
     </div>
-    <!-- Mobile/Tablet filter dropdown -->
+    <!-- Mobile/tablet filter dropdown -->
     <div class="flex justify-center my-4 md:hidden">
       <div
         class="flex items-center space-x-3 bg-brand-nav-bg-light p-2 rounded-lg shadow"
@@ -47,7 +47,7 @@
         </button>
       </div>
     </div>
-    <!-- Job Cards Grid -->
+    <!-- Job cards grid -->
     <div
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 job-grid justify-items-center"
     >

@@ -95,6 +95,13 @@
                 Submit job advertisement
               </button>
             </div>
+            <router-link to="/profile" v-if="isAuthenticated">
+              <button
+                class="bg-brand-blue-600 text-white p-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 focus:ring focus:ring-brand-blue-200 transition"
+              >
+                Profile
+              </button>
+            </router-link>
             <button
               v-if="isAuthenticated"
               @click="performLogout"
@@ -148,6 +155,13 @@
               Submit job advertisement
             </button>
           </div>
+          <router-link to="/profile" v-if="isAuthenticated" @click="closeMenu">
+            <button
+              class="bg-brand-blue-600 text-white p-2 mt-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 mb-2 focus:ring focus:ring-brand-blue-200 transition"
+            >
+              Profile
+            </button>
+          </router-link>
           <button
             v-if="isAuthenticated"
             @click="performLogout"

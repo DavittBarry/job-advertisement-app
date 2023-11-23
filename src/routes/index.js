@@ -6,6 +6,7 @@ import RegisterTemplate from "../components/RegisterTemplate.vue";
 import LoginTemplate from "../components/LoginTemplate.vue";
 import SubmitJobForm from "../components/SubmitJobForm.vue";
 import JobDetails from "../components/JobDetails.vue";
+import UserProfile from "../components/UserProfile.vue";
 
 const routes = [
   {
@@ -43,6 +44,12 @@ const routes = [
     path: "/search",
     name: "SearchResults",
     component: () => import("@/components/SearchResults.vue"),
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: UserProfile,
+    meta: { requiresAuth: true },
   },
 ];
 

@@ -17,6 +17,19 @@ mongoose.connect(process.env.MONGODB_URI, {
   useUnifiedTopology: true,
 });
 
+const verifyToken = (req, res, next) => {
+  const token = req.header("auth-token");
+  if (!token) return res.status(401).send("Access Denied");
+
+  try {
+    const verified = jwt.verify(token, process.env.SECRET_KEY);
+    req.user = verified;
+    next();
+  } catch (error) {
+    res.status(400).send("Invalid Token");
+  }
+};
+
 app.post("/register", async (req, res) => {
   const { username, password, email } = req.body;
   try {
@@ -54,7 +67,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.post("/api/jobEntries", async (req, res) => {
+app.post("/api/jobEntries", verifyToken, async (req, res) => {
   try {
     const jobData = {
       title: req.body.title,
@@ -64,6 +77,7 @@ app.post("/api/jobEntries", async (req, res) => {
       employmentType: req.body.employmentType,
       postedDate: req.body.postedDate,
       applyLink: req.body.applyLink,
+      postedBy: req.user._id,
     };
 
     const newJob = new Job(jobData);
@@ -75,6 +89,19 @@ app.post("/api/jobEntries", async (req, res) => {
     res
       .status(500)
       .send("An error occurred while posting the job advertisement.");
+  }
+});
+
+// Get posts by the logged-in user
+app.get("/user/posts", verifyToken, async (req, res) => {
+  try {
+    const userJobEntries = await Job.find({ postedBy: req.user._id });
+    res.json(userJobEntries);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .send("An error occurred while fetching the user's job posts.");
   }
 });
 
@@ -103,6 +130,26 @@ app.get("/api/jobEntries/:id", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send("An error occurred while fetching the job details.");
+  }
+});
+
+// Delete a job entry
+app.delete("/api/jobEntries/:id", verifyToken, async (req, res) => {
+  try {
+    const jobEntry = await Job.findById(req.params.id);
+    if (!jobEntry) {
+      return res.status(404).send("Job not found");
+    }
+
+    if (jobEntry.postedBy.toString() !== req.user._id) {
+      return res.status(401).send("Unauthorized");
+    }
+
+    await Job.findByIdAndDelete(req.params.id);
+    res.send("Job entry deleted");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("An error occurred while deleting the job entry.");
   }
 });
 
