@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const cors = require("cors");
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client(process.env.VUE_APP_GOOGLE_CLIENT_ID);
 
 const User = require("./models/userModel");
 const Job = require("./models/jobModel");
@@ -64,6 +66,35 @@ app.post("/login", async (req, res) => {
     res.header("auth-token", token).send(token);
   } catch (error) {
     res.status(400).json({ error: error.message });
+  }
+});
+
+app.post("/google-sign-in", async (req, res) => {
+  try {
+    const { idToken } = req.body;
+    const ticket = await client.verifyIdToken({
+      idToken: idToken,
+      audience: process.env.VUE_APP_GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const userid = payload["sub"];
+
+    let user = await User.findOne({ googleId: userid });
+    if (!user) {
+      user = new User({
+        username: payload["name"],
+        email: payload["email"],
+        googleId: userid,
+      });
+      await user.save();
+    }
+
+    const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY);
+    res.status(200).json({ token: token });
+  } catch (error) {
+    console.error("Error during Google sign-in:", error);
+    res.status(500).send("An error occurred during Google sign-in.");
   }
 });
 

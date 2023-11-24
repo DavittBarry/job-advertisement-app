@@ -57,12 +57,25 @@
           </button>
         </div>
       </form>
+      <button
+        v-if="!isAuthenticated"
+        @click="signInWithGoogle"
+        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-black hover:text-white bg-white hover:bg-brand-blue-500"
+      >
+        <img
+          src="@/assets/Google__G__logo.svg"
+          alt="Google logo"
+          class="mr-2 h-6"
+        />
+        Register with Google
+      </button>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import { mapState } from "vuex";
 import { handleRegisterSuccess } from "../middleware/successHandlers";
 import { globalErrorMiddleware } from "../middleware/errorMiddleware";
 
@@ -77,6 +90,11 @@ export default {
       isSubmitting: false,
       errorMessage: "",
     };
+  },
+  computed: {
+    ...mapState({
+      isAuthenticated: (state) => !!state.token,
+    }),
   },
   methods: {
     async register() {
@@ -109,6 +127,25 @@ export default {
           console.error("Error message:", error.message);
         }
       }
+    },
+    signInWithGoogle() {
+      const GoogleAuth = window.gapi.auth2.getAuthInstance();
+      GoogleAuth.signIn().then((googleUser) => {
+        const id_token = googleUser.getAuthResponse().id_token;
+
+        axios
+          .post(`${process.env.VUE_APP_API_URL}/google-sign-in`, {
+            idToken: id_token,
+          })
+          .then((response) => {
+            const token = response.data.token;
+            this.$store.dispatch("login", token);
+            this.$router.push({ name: "Home" });
+          })
+          .catch((error) => {
+            console.error("Error during Google Sign In:", error);
+          });
+      });
     },
   },
 };

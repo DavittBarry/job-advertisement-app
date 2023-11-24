@@ -16,7 +16,7 @@
           ><span class="text-gray-700">{{ job.location }}</span>
         </p>
         <p class="text-gray-600 text-sm">
-          <strong>Employment Type:</strong>
+          <strong>Employment Type: </strong>
           <span class="text-gray-700">{{ job.employmentType }}</span>
         </p>
         <div class="mt-6">

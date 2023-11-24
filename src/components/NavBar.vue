@@ -72,6 +72,18 @@
         </div>
         <div class="hidden lg:block">
           <div class="lg:flex lg:items-center lg:space-x-4">
+            <button
+              v-if="!isAuthenticated"
+              @click="signInWithGoogle"
+              class="bg-white hover:bg-brand-blue-600 hover:text-white text-black font-bold py-2 px-4 rounded transition inline-flex items-center"
+            >
+              <img
+                src="@/assets/Google__G__logo.svg"
+                alt="Google logo"
+                class="mr-2 h-6"
+              />
+              Sign in with Google
+            </button>
             <router-link to="/login" v-if="!isAuthenticated">
               <button
                 class="bg-brand-blue-600 text-white p-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 focus:ring w-[74.57px] focus:ring-brand-blue-200 transition"
@@ -146,6 +158,7 @@
               Register
             </button>
           </router-link>
+
           <div class="flex justify-center">
             <button
               v-if="isAuthenticated"
@@ -170,6 +183,18 @@
             Logout
           </button>
         </div>
+        <button
+          v-if="!isAuthenticated"
+          @click="signInWithGoogle"
+          class="bg-white hover:bg-brand-blue-600 text-black hover:text-white font-bold py-1 px-1 rounded inline-flex items-center"
+        >
+          <img
+            src="@/assets/Google__G__logo.svg"
+            alt="Google logo"
+            class="mr-2 h-6"
+          />
+          Sign in with Google
+        </button>
       </div>
     </div>
   </nav>
@@ -179,6 +204,7 @@
 import { mapState, mapActions } from "vuex";
 import { globalErrorMiddleware } from "../middleware/errorMiddleware";
 import { handleLogoutSuccess } from "../middleware/successHandlers";
+import axios from "axios";
 
 export default {
   name: "NavBar",
@@ -202,6 +228,25 @@ export default {
         .catch((error) => {
           globalErrorMiddleware(error);
         });
+    },
+    signInWithGoogle() {
+      const GoogleAuth = window.gapi.auth2.getAuthInstance();
+      GoogleAuth.signIn().then((googleUser) => {
+        const id_token = googleUser.getAuthResponse().id_token;
+
+        axios
+          .post(`${process.env.VUE_APP_API_URL}/google-sign-in`, {
+            idToken: id_token,
+          })
+          .then((response) => {
+            const token = response.data.token;
+            this.$store.dispatch("login", token);
+            this.$router.push({ name: "Home" });
+          })
+          .catch((error) => {
+            console.error("Error during Google Sign In:", error);
+          });
+      });
     },
     navigateToJobSubmission() {
       if (this.isAuthenticated) {

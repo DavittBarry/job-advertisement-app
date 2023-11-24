@@ -2,7 +2,7 @@
   <div class="container mx-auto px-4 py-6">
     <!-- Profile information -->
     <div class="text-center py-6">
-      <h1 class="text-3xl font-bold">User's Profile</h1>
+      <h1 class="text-3xl font-bold">{{ userName }}'s Profile</h1>
     </div>
 
     <!-- User's job posts -->
@@ -38,6 +38,14 @@
     <div v-else class="text-center text-gray-800 text-lg">
       You have no posts.
     </div>
+    <div class="flex justify-center my-4">
+      <button
+        @click="navigateToJobSubmission"
+        class="bg-brand-blue-600 text-white px-4 py-2 rounded hover:bg-brand-green-500 focus:outline-none"
+      >
+        Submit job advertisement
+      </button>
+    </div>
   </div>
 </template>
 
@@ -53,6 +61,11 @@ export default {
     return {
       userJobs: [],
     };
+  },
+  computed: {
+    userName() {
+      return this.$store.getters.userName;
+    },
   },
   methods: {
     async fetchUserJobs() {
