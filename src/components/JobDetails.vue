@@ -11,15 +11,15 @@
         <p class="text-gray-700 text-left text-base mb-4">
           {{ job.description }}
         </p>
-        <p class="text-gray-600 text-sm">
+        <p class="text-gray-600 mt-12 text-left text-sm">
           <strong>Location: </strong
           ><span class="text-gray-700">{{ job.location }}</span>
         </p>
-        <p class="text-gray-600 text-sm">
+        <p class="text-gray-600 text-left text-sm">
           <strong>Employment Type: </strong>
           <span class="text-gray-700">{{ job.employmentType }}</span>
         </p>
-        <div class="mt-6">
+        <div class="mt-16 mb-6">
           <a
             :href="job.applyLink"
             target="_blank"

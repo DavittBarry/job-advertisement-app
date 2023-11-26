@@ -4,34 +4,43 @@ const store = createStore({
   state() {
     return {
       token: localStorage.getItem("token") || "",
+      loggedIn: false,
+      userName: localStorage.getItem("userName") || "",
     };
   },
   getters: {
-    isAuthenticated: (state) => state.token !== undefined && state.token !== "",
+    isAuthenticated: (state) => state.loggedIn,
+    userName: (state) => state.userName,
   },
   mutations: {
     SET_TOKEN(state, token) {
-      if (token !== undefined) {
-        state.token = token;
+      state.token = token;
+      state.loggedIn = !!token;
+      if (token) {
+        localStorage.setItem("token", token);
       } else {
-        console.error("Attempted to set token with undefined");
+        localStorage.removeItem("token");
+      }
+    },
+    SET_USER_NAME(state, userName) {
+      state.userName = userName;
+      if (userName) {
+        localStorage.setItem("userName", userName);
+      } else {
+        localStorage.removeItem("userName");
       }
     },
   },
   actions: {
-    login({ commit }, token) {
-      return new Promise((resolve) => {
-        commit("SET_TOKEN", token);
-        localStorage.setItem("token", token);
-        resolve();
-      });
+    login({ commit }, { token, userName }) {
+      commit("SET_TOKEN", token);
+      commit("SET_USER_NAME", userName);
     },
     logout({ commit }) {
-      return new Promise((resolve) => {
-        commit("SET_TOKEN", "");
-        localStorage.removeItem("token");
-        resolve();
-      });
+      commit("SET_TOKEN", "");
+      commit("SET_USER_NAME", "");
+      localStorage.removeItem("token");
+      localStorage.removeItem("userName");
     },
   },
 });

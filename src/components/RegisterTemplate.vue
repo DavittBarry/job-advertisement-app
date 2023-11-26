@@ -75,7 +75,7 @@
 
 <script>
 import axios from "axios";
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 import { handleRegisterSuccess } from "../middleware/successHandlers";
 import { globalErrorMiddleware } from "../middleware/errorMiddleware";
 
@@ -97,6 +97,7 @@ export default {
     }),
   },
   methods: {
+    ...mapActions(["login"]),
     async register() {
       if (this.isSubmitting) return;
       this.isSubmitting = true;
@@ -109,8 +110,14 @@ export default {
           password: this.password,
         });
 
+        this.login({
+          token: response.data.token,
+          userName: response.data.username,
+        });
+
         handleRegisterSuccess(response);
-        this.$router.push("/login");
+
+        this.$router.push({ name: "Home" });
 
         this.isSubmitting = false;
       } catch (error) {
@@ -134,12 +141,14 @@ export default {
         const id_token = googleUser.getAuthResponse().id_token;
 
         axios
-          .post(`${process.env.VUE_APP_API_URL}/google-sign-in`, {
+          .post(`${apiURL}/google-sign-in`, {
             idToken: id_token,
           })
           .then((response) => {
-            const token = response.data.token;
-            this.$store.dispatch("login", token);
+            this.login({
+              token: response.data.token,
+              userName: response.data.username,
+            });
             this.$router.push({ name: "Home" });
           })
           .catch((error) => {

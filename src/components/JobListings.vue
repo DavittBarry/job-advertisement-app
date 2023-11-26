@@ -9,6 +9,20 @@
         Submit job advertisement
       </button>
     </div>
+    <div class="flex justify-center mt-4 mb-10 px-4">
+      <input
+        v-model="searchTerm"
+        type="text"
+        placeholder="Search for jobs..."
+        class="p-3 border shadow-md border-gray-300 rounded-l-lg text-sm w-full max-w-md"
+      />
+      <button
+        @click="search"
+        class="bg-brand-blue-600 text-white p-3 rounded-r-lg hover:bg-brand-green-500 focus:outline-none focus:ring-2 focus:ring-brand-blue-200 focus:ring-opacity-50 transition duration-300 shadow-md w-auto"
+      >
+        Search
+      </button>
+    </div>
     <!-- Mobile/tablet filter dropdown -->
     <div class="flex justify-center my-4 md:hidden">
       <div
@@ -60,6 +74,7 @@
 import axios from "axios";
 import JobCard from "./JobCard.vue";
 import { mapGetters, mapActions } from "vuex";
+import { globalErrorMiddleware } from "../middleware/errorMiddleware";
 
 const apiURL = process.env.VUE_APP_API_URL;
 
@@ -68,6 +83,7 @@ export default {
     return {
       jobs: [],
       currentFilter: "all",
+      searchTerm: "",
       filters: [
         "all",
         "full-time",
@@ -99,6 +115,16 @@ export default {
           name: "Login",
           query: { redirect: "/submit-job-form" },
         });
+      }
+    },
+    search() {
+      if (this.searchTerm.trim()) {
+        this.$router.push({
+          name: "SearchResults",
+          query: { q: this.searchTerm.trim() },
+        });
+      } else {
+        globalErrorMiddleware({ message: "The search bar cannot be empty." });
       }
     },
     async setFilter(filter) {

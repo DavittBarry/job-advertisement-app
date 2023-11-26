@@ -12,7 +12,7 @@ const app = createApp(App);
 
 const googleOAuthID = process.env.VUE_APP_GOOGLE_CLIENT_ID;
 
-// Initialize Google API Client
+// Initialization for the Google API Client
 let gAuthInitialized = false;
 
 loadGapiInsideDOM()
@@ -26,7 +26,7 @@ loadGapiInsideDOM()
         .then(() => {
           if (!gAuthInitialized) {
             app.use(GAuth, gauthOption);
-            gAuthInitialized = true; // Set the flag to true after initializing
+            gAuthInitialized = true;
           }
 
           app.use(store);
@@ -39,7 +39,7 @@ loadGapiInsideDOM()
     console.error("Error loading Google API Client:", error);
   });
 
-// Configure Google OAuth2
+// Configures Google OAuth2
 const gauthOption = {
   clientId: googleOAuthID,
   scope: "profile email",

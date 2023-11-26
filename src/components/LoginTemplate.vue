@@ -115,11 +115,14 @@ export default {
           })
           .then((response) => {
             const token = response.data.token;
-            this.$store.dispatch("login", token);
-            this.$router.push({ name: "Home" });
+            this.$store.dispatch("login", token).then(() => {
+              handleLoginSuccess();
+              this.$router.push({ name: "Home" });
+            });
           })
           .catch((error) => {
             console.error("Error during Google Sign In:", error);
+            globalErrorMiddleware(error);
           });
       });
     },

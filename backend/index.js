@@ -35,17 +35,25 @@ const verifyToken = (req, res, next) => {
 app.post("/register", async (req, res) => {
   const { username, password, email } = req.body;
   try {
+    const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+    if (existingUser) {
+      return res.status(400).send("Username or email already exists.");
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ username, email, password: hashedPassword });
-    await newUser.save();
-    res.status(201).json({ message: "User registered", userId: newUser._id });
+    const savedUser = await newUser.save();
+
+    const token = jwt.sign(
+      { _id: savedUser._id, username: savedUser.username },
+      process.env.SECRET_KEY,
+      { expiresIn: "1d" },
+    );
+
+    res.status(201).json({ token: token, username: savedUser.username });
   } catch (error) {
-    if (error.code === 11000) {
-      res.status(400).send("Username already exists.");
-    } else {
-      console.error(error);
-      res.status(500).send("An error occurred during registration.");
-    }
+    console.error(error);
+    res.status(500).send("An error occurred during registration.");
   }
 });
 
@@ -62,8 +70,11 @@ app.post("/login", async (req, res) => {
       throw new Error("Invalid username or password");
     }
 
-    const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY);
-    res.header("auth-token", token).send(token);
+    const token = jwt.sign(
+      { _id: user._id, username: user.username },
+      process.env.SECRET_KEY,
+    );
+    res.json({ token: token, username: user.username });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -80,18 +91,22 @@ app.post("/google-sign-in", async (req, res) => {
     const payload = ticket.getPayload();
     const userid = payload["sub"];
 
+    let username = payload["email"].split("@")[0];
     let user = await User.findOne({ googleId: userid });
     if (!user) {
       user = new User({
-        username: payload["name"],
+        username: username,
         email: payload["email"],
         googleId: userid,
       });
       await user.save();
     }
 
-    const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY);
-    res.status(200).json({ token: token });
+    const token = jwt.sign(
+      { _id: user._id, username: user.username },
+      process.env.SECRET_KEY,
+    );
+    res.json({ token: token, username: user.username });
   } catch (error) {
     console.error("Error during Google sign-in:", error);
     res.status(500).send("An error occurred during Google sign-in.");
@@ -123,7 +138,7 @@ app.post("/api/jobEntries", verifyToken, async (req, res) => {
   }
 });
 
-// Get posts by the logged-in user
+// Get posts from the logged-in user
 app.get("/user/posts", verifyToken, async (req, res) => {
   try {
     const userJobEntries = await Job.find({ postedBy: req.user._id });

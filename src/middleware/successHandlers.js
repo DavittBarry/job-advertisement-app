@@ -62,10 +62,9 @@ export const handleLogoutSuccess = () => {
   showSuccess("Logout successful");
 };
 
-export const handleLoginSuccess = (response) => {
-  const successMessage = response.data.message || "Login successful";
-  showSuccess(successMessage);
-};
+export function handleLoginSuccess() {
+  showSuccess("Logged in successfully!");
+}
 
 export const handleRegisterSuccess = (response) => {
   const successMessage = response.data.message || "Registration successful";

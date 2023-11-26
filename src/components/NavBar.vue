@@ -203,15 +203,22 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import { globalErrorMiddleware } from "../middleware/errorMiddleware";
-import { handleLogoutSuccess } from "../middleware/successHandlers";
+import {
+  handleLoginSuccess,
+  handleLogoutSuccess,
+} from "@/middleware/successHandlers";
 import axios from "axios";
 
 export default {
   name: "NavBar",
   computed: {
     ...mapState({
-      isAuthenticated: (state) => !!state.token,
+      token: (state) => state.token,
+      userName: (state) => state.userName,
     }),
+    isAuthenticated() {
+      return !!this.token;
+    },
   },
   methods: {
     ...mapActions(["logout"]),
@@ -231,22 +238,33 @@ export default {
     },
     signInWithGoogle() {
       const GoogleAuth = window.gapi.auth2.getAuthInstance();
-      GoogleAuth.signIn().then((googleUser) => {
-        const id_token = googleUser.getAuthResponse().id_token;
+      GoogleAuth.signIn()
+        .then((googleUser) => {
+          const id_token = googleUser.getAuthResponse().id_token;
 
-        axios
-          .post(`${process.env.VUE_APP_API_URL}/google-sign-in`, {
-            idToken: id_token,
-          })
-          .then((response) => {
-            const token = response.data.token;
-            this.$store.dispatch("login", token);
-            this.$router.push({ name: "Home" });
-          })
-          .catch((error) => {
-            console.error("Error during Google Sign In:", error);
-          });
-      });
+          axios
+            .post(`${process.env.VUE_APP_API_URL}/google-sign-in`, {
+              idToken: id_token,
+            })
+            .then((response) => {
+              this.$store
+                .dispatch("login", {
+                  token: response.data.token,
+                  userName: response.data.username,
+                })
+                .then(() => {
+                  handleLoginSuccess();
+                  this.$router.push({ name: "Home" });
+                  this.$forceUpdate();
+                });
+            })
+            .catch((error) => {
+              globalErrorMiddleware(error);
+            });
+        })
+        .catch((error) => {
+          globalErrorMiddleware(error);
+        });
     },
     navigateToJobSubmission() {
       if (this.isAuthenticated) {
