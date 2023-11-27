@@ -8,9 +8,6 @@
             to="/"
             class="flex-shrink-0 flex items-center space-x-2 rounded-lg hover:bg-brand-nav-bg-light transition"
             active-class="bg-brand-nav-bg-light"
-            :style="{
-              background: 'linear-gradient(to right, #D9D9D9, #F1F1F1)',
-            }"
             @click="closeMenu"
           >
             <img
@@ -24,8 +21,8 @@
         <div class="hidden lg:flex lg:items-center lg:justify-center lg:flex-1">
           <router-link
             to="/job-listings"
-            class="text-gray-600 bg-white text-2xl font-semibold ml-3 mr-3 p-1 rounded-lg hover:bg-logo-container-bg hover:text-gray-900 transition"
-            active-class="bg-logo-container-bg text-gray-900"
+            class="px-4 py-2 text-sm font-medium text-gray-800 transition duration-150 ease-in-out rounded-md hover:bg-brand-blue-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-blue-600"
+            active-class="bg-brand-blue-500 text-white"
           >
             Job listings
           </router-link>
@@ -38,7 +35,7 @@
             <span class="sr-only">Open main menu</span>
             <svg
               v-if="!isOpen"
-              class="block h-6 w-6 transition duration-300 ease-in-out"
+              class="block h-8 w-8 transition duration-300 ease-in-out"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -54,7 +51,7 @@
             </svg>
             <svg
               v-else
-              class="block h-6 w-6 transition duration-300 ease-in-out"
+              class="block h-8 w-8 transition duration-300 ease-in-out"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -86,7 +83,7 @@
             </button>
             <router-link to="/login" v-if="!isAuthenticated">
               <button
-                class="bg-brand-blue-600 text-white p-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 focus:ring w-[74.57px] focus:ring-brand-blue-200 transition"
+                class="bg-brand-blue-600 text-white p-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 focus:ring min-w-[80px] focus:ring-brand-blue-200 transition"
               >
                 Login
               </button>
@@ -128,13 +125,15 @@
     <!-- Mobile view -->
     <div
       :class="{ block: isOpen, hidden: !isOpen }"
-      class="lg:hidden text-center fixed inset-13 h-1/8 w-full z-50 bg-brand-nav-bg-light"
+      class="lg:hidden text-center absolute top-16 left-0 right-0 bg-brand-nav-bg-light overflow-y-auto"
+      style="max-height: calc(100% - 4rem)"
+      ref="menu"
     >
       <div class="px-2 pt-2 pb-3 space-y-4 mt-6 sm:px-3 text-lg">
         <router-link
           to="/job-listings"
-          class="text-gray-600 bg-white mt-6 text-2xl font-semibold p-2 rounded-lg hover:bg-logo-container-bg hover:text-gray-900 transition"
-          active-class="bg-logo-container-bg text-gray-900"
+          class="px-4 py-2 text-xl font-medium text-gray-800 transition duration-150 ease-in-out rounded-md hover:bg-brand-blue-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-blue-600"
+          active-class="bg-brand-blue-500 text-white"
           @click="closeMenu"
         >
           Job listings
@@ -276,9 +275,24 @@ export default {
         });
       }
     },
+    handleClickOutside(event) {
+      if (
+        this.$refs.menu &&
+        !this.$refs.menu.contains(event.target) &&
+        !event.target.matches(".menu-toggle-button")
+      ) {
+        this.closeMenu();
+      }
+    },
     closeMenu() {
       this.isOpen = false;
     },
+  },
+  mounted() {
+    document.addEventListener("mousedown", this.handleClickOutside);
+  },
+  beforeUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
   },
   data() {
     return {

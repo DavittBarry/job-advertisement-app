@@ -62,10 +62,17 @@
       </div>
     </div>
     <!-- Job cards grid -->
-    <div
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 job-grid justify-items-center"
-    >
-      <JobCard v-for="job in filteredJobs" :key="job.id" :job="job" />
+    <div class="max-w-7xl mx-auto">
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 justify-center"
+      >
+        <JobCard
+          v-for="job in filteredJobs"
+          :key="job.id"
+          :job="job"
+          class="w-full max-w-sm mx-auto"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -148,21 +155,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.job-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1rem;
-  justify-items: center;
-  justify-content: center;
-}
-
-.dropdown-text {
-  @apply text-gray-800 dark:text-white;
-}
-
-.dropdown-bg {
-  @apply bg-white dark:bg-brand-nav-bg-light;
-}
-</style>

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="hero bg-cover bg-center flex flex-col justify-center"
+    class="hero bg-cover bg-center flex flex-col justify-center min-h-[500px]"
     :style="{ backgroundImage: 'url(' + jobSearchImage + ')' }"
   >
     <div
@@ -35,7 +35,12 @@
     <div
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4"
     >
-      <JobCard v-for="job in jobs" :key="job.title" :job="job" />
+      <JobCard
+        v-for="job in jobs"
+        :key="job.title"
+        :job="job"
+        class="min-h-[200px]"
+      />
     </div>
   </div>
   <div>
@@ -47,6 +52,9 @@
 <style>
 .hero {
   @apply pt-16 md:pt-32;
+}
+body {
+  overflow-y: scroll; /* Always shows the vertical scrollbar */
 }
 </style>
 

@@ -24,7 +24,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.6.1",
     "postcss": "^8.4.29",
-    "tailwindcss": "^3.3.3",
+    "tailwindcss": "^3.3.5",
     "vue": "^3.2.13",
     "vue-google-oauth2": "^1.5.10",
     "vue-router": "^4.0.13",

@@ -1,7 +1,7 @@
 export function showSuccess(message) {
   const wrapperDiv = document.createElement("div");
   wrapperDiv.className =
-    "fixed top-5 left-0 right-0 flex items-start justify-center z-50";
+    "fixed top-16 left-0 right-0 flex items-start justify-center z-50";
 
   const successDiv = document.createElement("div");
   successDiv.innerText = message;

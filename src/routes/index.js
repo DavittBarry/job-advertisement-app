@@ -8,6 +8,8 @@ import SubmitJobForm from "../components/SubmitJobForm.vue";
 import JobDetails from "../components/JobDetails.vue";
 import UserProfile from "../components/UserProfile.vue";
 import EditJobForm from "../components/EditJobForm.vue";
+import PrivacyStatement from "../components/PrivacyStatement.vue";
+import CookiePolicy from "../components/CookiePolicy.vue";
 
 const routes = [
   {
@@ -58,11 +60,28 @@ const routes = [
     component: EditJobForm,
     props: true,
   },
+  {
+    path: "/privacy-statement",
+    name: "PrivacyStatement",
+    component: PrivacyStatement,
+  },
+  {
+    path: "/cookie-policy",
+    name: "CookiePolicy",
+    component: CookiePolicy,
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      return { left: 0, top: 0 };
+    }
+  },
 });
 
 router.beforeEach((to, from, next) => {

@@ -13,7 +13,7 @@ export function globalErrorMiddleware(error) {
 function showError(message) {
   const wrapperDiv = document.createElement("div");
   wrapperDiv.className =
-    "fixed top-0 left-0 right-0 flex items-start justify-center z-50 mt-1";
+    "fixed top-14 left-0 right-0 flex items-start justify-center z-50 mt-1";
 
   const errorDiv = document.createElement("div");
   errorDiv.innerText = message;
