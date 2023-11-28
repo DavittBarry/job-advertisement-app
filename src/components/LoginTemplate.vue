@@ -84,14 +84,15 @@ export default {
         });
 
         handleLoginSuccess(response);
-
         await store.dispatch("login", response.data);
+
         if (router.currentRoute.value.query.redirect) {
           router.push(router.currentRoute.value.query.redirect.toString());
         } else {
           router.push({ name: "Home" });
         }
       } catch (error) {
+        // Handle errors
         console.error("An error occurred during login:", error);
         globalErrorMiddleware(error);
       }
