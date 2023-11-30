@@ -69,7 +69,7 @@
         </div>
         <div class="hidden lg:block">
           <div class="lg:flex lg:items-center lg:space-x-4">
-            <button
+            <!--<button
               v-if="!isAuthenticated"
               @click="signInWithGoogle"
               class="bg-white hover:bg-brand-blue-600 hover:text-white text-black font-bold py-2 px-4 rounded transition inline-flex items-center"
@@ -80,7 +80,7 @@
                 class="mr-2 h-6"
               />
               Sign in with Google
-            </button>
+            </button> -->
             <router-link to="/login" v-if="!isAuthenticated">
               <button
                 class="bg-brand-blue-600 text-white p-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 focus:ring min-w-[80px] focus:ring-brand-blue-200 transition"
@@ -182,7 +182,7 @@
             Logout
           </button>
         </div>
-        <button
+        <!-- <button
           v-if="!isAuthenticated"
           @click="signInWithGoogle"
           class="bg-white hover:bg-brand-blue-600 text-black hover:text-white font-bold py-1 px-1 rounded inline-flex items-center"
@@ -193,7 +193,7 @@
             class="mr-2 h-6"
           />
           Sign in with Google
-        </button>
+        </button> -->
       </div>
     </div>
   </nav>

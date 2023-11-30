@@ -43,7 +43,7 @@
           </button>
         </div>
       </form>
-      <button
+      <!--<button
         v-if="!isAuthenticated"
         @click="signInWithGoogle"
         class="group relative w-full flex justify-center py-2 px-4 mt-6 border border-transparent text-sm font-medium rounded-md text-black hover:text-white bg-white hover:bg-brand-blue-500"
@@ -54,7 +54,7 @@
           class="mr-2 h-6"
         />
         Log in with Google
-      </button>
+      </button> -->
     </div>
   </div>
 </template>
