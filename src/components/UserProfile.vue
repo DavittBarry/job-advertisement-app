@@ -2,7 +2,7 @@
   <div class="container mx-auto px-4 py-6">
     <!-- Profile information -->
     <div class="text-center py-6">
-      <h1 class="text-3xl font-bold">{{ userName }}'s Profile</h1>
+      <h1 class="text-3xl font-bold">User Profile</h1>
     </div>
 
     <!-- User's job posts -->
@@ -51,9 +51,8 @@
 
 <script>
 import axios from "axios";
+import { mapState, mapActions } from "vuex";
 import { showSuccess, showConfirmation } from "@/middleware/successHandlers";
-
-const apiURL = process.env.VUE_APP_API_URL;
 
 export default {
   name: "UserProfile",
@@ -63,29 +62,49 @@ export default {
     };
   },
   computed: {
-    userName() {
-      return this.$store.getters.userName;
-    },
+    ...mapState({
+      token: (state) => state.token,
+      userName: (state) => state.userName,
+    }),
   },
   methods: {
-    async fetchUserJobs() {
-      try {
-        const response = await axios.get(`${apiURL}/user/posts`, {
-          headers: { "auth-token": this.$store.state.authToken },
-        });
-        this.userJobs = response.data;
-      } catch (error) {
-        console.error("Error fetching user jobs: ", error);
-      }
-    },
+    ...mapActions(["fetchUserJobs"]),
+    // async fetchUserJobs() {
+    // try {
+    // const response = await axios.get(
+    //      `${process.env.VUE_APP_API_URL}/user/posts`,
+    //   {
+    //  headers: { "auth-token": this.token },
+    //  },
+    // );
+    // this.userJobs = response.data;
+    // } catch (error) {
+    // console.error("Error fetching user jobs: ", error);
+    // }
+    // },
+    // signInWithGoogle() {
+    // sconst GoogleAuth = window.gapi.auth2.getAuthInstance();
+    // sGoogleAuth.signIn()
+    // s.then((googleUser) => {
+    // sthis.$store.dispatch("googleLogin", googleUser);
+    // sthis.$router.push({ name: "Home" });
+    // s)
+    // s.catch((error) => {
+    // sconsole.error("Error during Google Sign In:", error);
+    // s});
+    // s},
+
     editJob(jobId) {
-      this.$router.push({ name: "EditJob", params: { editId: jobId } });
+      this.$router.push({ name: "EditJob", params: { id: jobId } });
     },
     async deleteJob(jobId) {
       try {
-        await axios.delete(`${apiURL}/api/jobEntries/${jobId}`, {
-          headers: { "auth-token": this.$store.state.authToken },
-        });
+        await axios.delete(
+          `${process.env.VUE_APP_API_URL}/api/jobEntries/${jobId}`,
+          {
+            headers: { "auth-token": this.token },
+          },
+        );
         this.fetchUserJobs();
         showSuccess("Job deleted successfully");
       } catch (error) {

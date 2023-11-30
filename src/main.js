@@ -5,39 +5,9 @@ import axios from "axios";
 import router from "./routes/index";
 import store from "./store/index";
 import { globalErrorMiddleware } from "./middleware/errorMiddleware";
-import GAuth from "vue-google-oauth2";
-import { loadGapiInsideDOM } from "gapi-script";
-
-const app = createApp(App);
+import GAuth from "vue3-google-oauth2";
 
 const googleOAuthID = process.env.VUE_APP_GOOGLE_CLIENT_ID;
-
-// Initialization for the Google API Client
-let gAuthInitialized = false;
-
-loadGapiInsideDOM()
-  .then(() => {
-    window.gapi.load("auth2", () => {
-      window.gapi.auth2
-        .init({
-          client_id: googleOAuthID,
-          scope: "profile email",
-        })
-        .then(() => {
-          if (!gAuthInitialized) {
-            app.use(GAuth, gauthOption);
-            gAuthInitialized = true;
-          }
-
-          app.use(store);
-          app.use(router);
-          app.mount("#app");
-        });
-    });
-  })
-  .catch((error) => {
-    console.error("Error loading Google API Client:", error);
-  });
 
 // Configures Google OAuth2
 const gauthOption = {
@@ -46,9 +16,12 @@ const gauthOption = {
   prompt: "select_account",
 };
 
+const app = createApp(App);
+
 // Sets the global error handler
 app.config.errorHandler = globalErrorMiddleware;
 
+// Axios configuration
 axios.defaults.baseURL = "http://localhost:4000";
 axios.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
@@ -57,6 +30,7 @@ axios.interceptors.request.use((config) => {
   }
   return config;
 });
+
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -65,9 +39,8 @@ axios.interceptors.response.use(
   },
 );
 
+app.use(GAuth, gauthOption);
 app.use(store);
 app.use(router);
 
-app.use(GAuth, gauthOption);
-
-app.use(router).mount("#app");
+app.mount("#app");

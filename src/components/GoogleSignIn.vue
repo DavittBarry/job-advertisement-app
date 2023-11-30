@@ -24,24 +24,28 @@
 </template>
 
 <script>
+import { useStore } from "vuex";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import { globalErrorMiddleware } from "../middleware/errorMiddleware";
 
 export default {
   setup() {
+    const store = useStore();
     const router = useRouter();
+    const apiURL = process.env.VUE_APP_API_URL;
 
     const signInWithGoogle = () => {
       const GoogleAuth = window.gapi.auth2.getAuthInstance();
       GoogleAuth.signIn().then((googleUser) => {
         const id_token = googleUser.getAuthResponse().id_token;
         axios
-          .post(`${process.env.VUE_APP_API_URL}/google-sign-in`, {
-            idToken: id_token,
-          })
+          .post(`${apiURL}/google-sign-in`, { idToken: id_token })
           .then((response) => {
-            localStorage.setItem("token", response.data.token);
+            store.dispatch("login", {
+              token: response.data.token,
+              userName: response.data.username,
+            });
             router.push({ name: "Home" });
           })
           .catch((error) => {

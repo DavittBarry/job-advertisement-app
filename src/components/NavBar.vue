@@ -69,7 +69,7 @@
         </div>
         <div class="hidden lg:block">
           <div class="lg:flex lg:items-center lg:space-x-4">
-            <!-- <button
+            <button
               v-if="!isAuthenticated"
               @click="signInWithGoogle"
               class="bg-white hover:bg-brand-blue-600 hover:text-white text-black font-bold py-2 px-4 rounded transition inline-flex items-center"
@@ -80,7 +80,7 @@
                 class="mr-2 h-6"
               />
               Sign in with Google
-            </button> -->
+            </button>
             <router-link to="/login" v-if="!isAuthenticated">
               <button
                 class="bg-brand-blue-600 text-white p-2 rounded hover:bg-brand-green-500 focus:outline-none focus:border-brand-blue-600 focus:ring min-w-[80px] focus:ring-brand-blue-200 transition"
@@ -182,7 +182,7 @@
             Logout
           </button>
         </div>
-        <!-- <button 
+        <button
           v-if="!isAuthenticated"
           @click="signInWithGoogle"
           class="bg-white hover:bg-brand-blue-600 text-black hover:text-white font-bold py-1 px-1 rounded inline-flex items-center"
@@ -193,7 +193,7 @@
             class="mr-2 h-6"
           />
           Sign in with Google
-        </button> -->
+        </button>
       </div>
     </div>
   </nav>
@@ -202,11 +202,7 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import { globalErrorMiddleware } from "../middleware/errorMiddleware";
-import {
-  handleLoginSuccess,
-  handleLogoutSuccess,
-} from "@/middleware/successHandlers";
-import axios from "axios";
+import { handleLogoutSuccess } from "@/middleware/successHandlers";
 
 export default {
   name: "NavBar",
@@ -235,36 +231,29 @@ export default {
           globalErrorMiddleware(error);
         });
     },
-    signInWithGoogle() {
-      const GoogleAuth = window.gapi.auth2.getAuthInstance();
-      GoogleAuth.signIn()
-        .then((googleUser) => {
-          const id_token = googleUser.getAuthResponse().id_token;
-
-          axios
-            .post(`${process.env.VUE_APP_API_URL}/google-sign-in`, {
-              idToken: id_token,
-            })
-            .then((response) => {
-              this.$store
-                .dispatch("login", {
-                  token: response.data.token,
-                  userName: response.data.username,
-                })
-                .then(() => {
-                  handleLoginSuccess();
-                  this.$router.push({ name: "Home" });
-                  this.$forceUpdate();
-                });
-            })
-            .catch((error) => {
-              globalErrorMiddleware(error);
-            });
-        })
-        .catch((error) => {
-          globalErrorMiddleware(error);
-        });
+    handleOAuthResponse() {
+      const urlParams = new URLSearchParams(window.location.hash.substring(1));
+      const token = urlParams.get("access_token");
+      const userName = "ExtractedUserName";
+      this.$store.dispatch("login", {
+        token: token,
+        userName: userName,
+      });
     },
+    signInWithGoogle() {
+      const googleOAuthURL = `https://accounts.google.com/o/oauth2/v2/auth`;
+      const clientId = process.env.VUE_APP_GOOGLE_CLIENT_ID;
+      const params = {
+        response_type: "token",
+        client_id: clientId,
+        redirect_uri: process.env.VUE_APP_REDIRECT_URI,
+        scope: "profile email",
+        prompt: "select_account",
+      };
+      const queryString = new URLSearchParams(params).toString();
+      window.location = `${googleOAuthURL}?${queryString}`;
+    },
+
     navigateToJobSubmission() {
       if (this.isAuthenticated) {
         this.$router.push("/submit-job-form");
@@ -290,7 +279,11 @@ export default {
   },
   mounted() {
     document.addEventListener("mousedown", this.handleClickOutside);
+    if (window.location.hash.includes("access_token")) {
+      this.handleOAuthResponse();
+    }
   },
+
   beforeUnmount() {
     document.removeEventListener("mousedown", this.handleClickOutside);
   },

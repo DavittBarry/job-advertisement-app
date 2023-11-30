@@ -1,10 +1,12 @@
 import { createStore } from "vuex";
+import { axios } from "axios";
 
 const store = createStore({
   state() {
+    const token = localStorage.getItem("token") || "";
     return {
-      token: localStorage.getItem("token") || "",
-      loggedIn: false,
+      token: token,
+      loggedIn: !!token,
       userName: localStorage.getItem("userName") || "",
     };
   },
@@ -24,11 +26,7 @@ const store = createStore({
     },
     SET_USER_NAME(state, userName) {
       state.userName = userName;
-      if (userName) {
-        localStorage.setItem("userName", userName);
-      } else {
-        localStorage.removeItem("userName");
-      }
+      localStorage.setItem("userName", userName);
     },
   },
   actions: {
@@ -41,6 +39,19 @@ const store = createStore({
       commit("SET_USER_NAME", "");
       localStorage.removeItem("token");
       localStorage.removeItem("userName");
+    },
+    googleLogin({ commit }, googleUser) {
+      axios
+        .post(`${process.env.VUE_APP_API_URL}/google-sign-in`, {
+          idToken: googleUser.getAuthResponse().id_token,
+        })
+        .then((response) => {
+          commit("SET_TOKEN", response.data.token);
+          commit("SET_USER_NAME", response.data.username);
+        })
+        .catch((error) => {
+          console.error("Error during Google Sign In:", error);
+        });
     },
   },
 });
